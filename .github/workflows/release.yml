@@ -1,0 +1,45 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build-aarch64:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:3.24
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install host packages
+        run: |
+          apk add --no-cache gcc-aarch64-none-elf g++-aarch64-none-elf \
+            binutils-aarch64-none-elf newlib-aarch64-none-elf \
+            cmake make qemu-aarch64 python3 file
+
+      - name: Build aarch64 sysroot (Qt6/KF6/Kirigami/BlueZ)
+        run: python3 build_env/build_sysroot.py
+
+      - name: Use musl headers instead of newlib
+        run: sh build_env/fix_cross_headers.sh
+
+      - name: Wrap sysroot Qt tools with qemu
+        run: sh build_env/wrap_sysroot_qemu.sh
+
+      - name: Build and smoke test
+        run: ./build.sh
+
+      - name: Package
+        run: |
+          mkdir -p dist
+          cp build-aarch64/lighthouse-pm dist/lighthouse-pm-aarch64
+
+      - name: Create release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/lighthouse-pm-aarch64
+          generate_release_notes: true
