@@ -21,7 +21,9 @@ Kirigami.Page {
         }
     ]
 
-    Kirigami.ColumnView {
+    Column {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
         Kirigami.Heading {
             text: qsTr("Scanning for lighthouses... Make sure your lighthouses are powered on. "
                       + "Version 2.0 lighthouses are named 'LHB-...' and Vive base stations 'HTC BS ...'.")
@@ -29,7 +31,7 @@ Kirigami.Page {
         }
         Kirigami.Separator {}
 
-        Kirigami.ColumnView {
+        Column {
             Layout.fillHeight: true
             ListView {
                 id: pairList
@@ -37,7 +39,7 @@ Kirigami.Page {
                 delegate: Item {
                     required property var model
                     height: Kirigami.Units.gridSize * 2
-                    Kirigami.ColumnView {
+                    Column {
                         RowLayout {
                             Layout.fillWidth: true
                             Kirigami.Heading {

@@ -26,9 +26,8 @@ Q_SIGNALS:
     void pairIdChanged();
 
 protected:
-    bool onServicesDiscovered(QLowEnergyController *controller) override;
-    void pollState(QLowEnergyController *controller) override;
-    void onDisconnected() override;
+    bool onServicesDiscovered() override;
+    void pollState() override;
 
 private:
     int m_pairId = -1;

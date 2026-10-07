@@ -61,7 +61,9 @@ Kirigami.ApplicationWindow {
                 }
             ]
 
-            Kirigami.ColumnView {
+            Column {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 // Status hints
                 Kirigami.InlineMessage {
                     visible: bleManager.scanning
@@ -72,8 +74,12 @@ Kirigami.ApplicationWindow {
                     text: qsTr("Bluetooth is off. Turn it on to talk to the lighthouses.")
                 }
 
-                Kirigami.ColumnView {
+                Column {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                     ListView {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
                         id: listView
                         model: appModel
                         spacing: Kirigami.Units.smallSpacing
@@ -144,7 +150,7 @@ Kirigami.ApplicationWindow {
                                         ? Kirigami.Theme.highlightColor
                                         : Kirigami.Theme.palette.base
                                 }
-                                Kirigami.ColumnView {
+                                Column {
                                     RowLayout {
                                         Layout.fillWidth: true
                                         ColumnLayout {

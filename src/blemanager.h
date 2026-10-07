@@ -1,20 +1,21 @@
 #pragma once
 
-#include <QObject>
 #include <QHash>
 #include <QPointer>
+#include <QObject>
+#include <QString>
 #include <QStringList>
+#include <QVariantMap>
 
 #include "settingsstore.h"
 
-class QBluetoothDeviceDiscoveryAgent;
-class QBluetoothDeviceInfo;
-class QBluetoothLocalDevice;
-class QLowEnergyController;
+class BluezDevice;
 class LighthouseDevice;
 class ViveBaseStationDevice;
 
 // Manages BLE scanning and the set of known lighthouse devices.
+// Scanning and GATT go through BlueZ D-Bus directly (the SteamOS Frame
+// does not ship QtBluetooth).
 class BleManager : public QObject
 {
     Q_OBJECT
@@ -51,21 +52,30 @@ public:
     Q_INVOKABLE QString vivePairIdHint(const QString &deviceId) const;
     Q_INVOKABLE QString vivePairIdHex(const QString &deviceId) const;
 
+public slots:
+    // Old-style slots for D-Bus signals (the firmware's Qt6 only supports
+    // QDBusConnection::connect with const char* slots).
+    void onAdapterPropertiesChanged(const QString &iface, const QVariantMap &changed, const QStringList &invalidated);
+    void onManagerInterfacesAdded(const QString &path, const QVariantMap &interfaces);
+    void onManagerInterfacesRemoved(const QString &path, const QStringList &interfaces);
+
 Q_SIGNALS:
     void scanningChanged();
     void adapterOnChanged();
     void devicesChanged();
 
 private:
-    void onDeviceDiscovered(const QBluetoothDeviceInfo &info);
-    void onDiscoveryFinished();
-    LighthouseDevice *createDevice(const QBluetoothDeviceInfo &info);
+    void handleDiscoveredDevice(const QString &name, const QString &address);
+    LighthouseDevice *createDevice(const QString &name, const QString &address);
+    BluezDevice *bluezFor(const QString &address);
+    void seedKnownDevices();
     void refreshAdapterState();
 
     SettingsStore m_settings;
     QHash<QString, QPointer<LighthouseDevice>> m_devices;
-    QPointer<QBluetoothDeviceDiscoveryAgent> m_discoveryAgent;
-    QBluetoothLocalDevice *m_localDevice = nullptr;
+    QHash<QString, QString> m_devicePaths;   // lowercase address -> BlueZ object path
+    QHash<QString, QPointer<BluezDevice>> m_bluezDevices; // lowercase address -> wrapper
+    QString m_adapterPath;
     bool m_scanning = false;
     bool m_adapterOn = false;
 };

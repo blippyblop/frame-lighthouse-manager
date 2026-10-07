@@ -1,16 +1,24 @@
 #include "blemanager.h"
 
-#include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothDeviceInfo>
-#include <QBluetoothLocalDevice>
-#include <QLowEnergyController>
+#include <QDebug>
+#include <QDBusConnection>
 #include <QProcess>
+#include <QVariantMap>
+#include <utility>
 
+#include "bluez.h"
+#include "bluezutil.h"
 #include "lighthousedevice.h"
 #include "lighthousev2device.h"
 #include "vivebasestation.h"
 
 namespace {
+#define ORG_BLUEZ "org.bluez"
+#define IFACE_ADAPTER "org.bluez.Adapter1"
+#define IFACE_DEVICE "org.bluez.Device1"
+#define IFACE_PROPS "org.freedesktop.DBus.Properties"
+#define IFACE_OBJECT_MANAGER "org.freedesktop.DBus.ObjectManager"
+
 constexpr char LHB_PREFIX[] = "LHB-";
 constexpr char VIVE_PREFIX[] = "HTC BS";
 } // namespace
@@ -18,13 +26,31 @@ constexpr char VIVE_PREFIX[] = "HTC BS";
 BleManager::BleManager(QObject *parent)
     : QObject(parent)
 {
-    m_localDevice = new QBluetoothLocalDevice(this);
+    m_adapterPath = Bluez::defaultAdapterPath();
     refreshAdapterState();
-    connect(m_localDevice, &QBluetoothLocalDevice::hostModeStateChanged,
-            this, [this](QBluetoothLocalDevice::HostMode mode) {
-                m_adapterOn = mode != QBluetoothLocalDevice::HostPoweredOff;
-                Q_EMIT adapterOnChanged();
-            });
+
+    QDBusConnection bus = QDBusConnection::systemBus();
+
+    // Track the adapter powered state.
+    if (!m_adapterPath.isEmpty()) {
+        if (!bus.connect(QStringLiteral(ORG_BLUEZ), m_adapterPath, IFACE_PROPS,
+                         QStringLiteral("PropertiesChanged"), this,
+                         SLOT(onAdapterPropertiesChanged(QString, QVariantMap, QStringList)))) {
+            qWarning() << "BlueZ: could not connect to adapter PropertiesChanged for" << m_adapterPath;
+        }
+    }
+
+    // Device objects appear (scan results, pairing) via ObjectManager.
+    if (!bus.connect(QStringLiteral(ORG_BLUEZ), QStringLiteral("/"), IFACE_OBJECT_MANAGER,
+                     QStringLiteral("InterfacesAdded"), this,
+                     SLOT(onManagerInterfacesAdded(QString, QVariantMap)))) {
+        qWarning() << "BlueZ: could not connect to ObjectManager InterfacesAdded";
+    }
+    if (!bus.connect(QStringLiteral(ORG_BLUEZ), QStringLiteral("/"), IFACE_OBJECT_MANAGER,
+                     QStringLiteral("InterfacesRemoved"), this,
+                     SLOT(onManagerInterfacesRemoved(QString, QStringList)))) {
+        qWarning() << "BlueZ: could not connect to ObjectManager InterfacesRemoved";
+    }
 
     // Restore last seen devices from the store.
     for (const QString &deviceId : m_settings.lastSeenDevices()) {
@@ -51,6 +77,9 @@ BleManager::BleManager(QObject *parent)
             }
         }
     }
+
+    // Devices BlueZ already knows (e.g. previously paired) show up too.
+    seedKnownDevices();
     Q_EMIT devicesChanged();
 }
 
@@ -85,22 +114,24 @@ QList<LighthouseDevice *> BleManager::devices() const
 
 void BleManager::refreshAdapterState()
 {
-    m_adapterOn = m_localDevice && m_localDevice->hostMode() != QBluetoothLocalDevice::HostPoweredOff;
+    m_adapterOn = Bluez::adapterPowered(m_adapterPath);
     Q_EMIT adapterOnChanged();
 }
 
 void BleManager::startScan()
 {
-    if (m_scanning || !m_adapterOn) {
+    if (m_scanning || !m_adapterOn || m_adapterPath.isEmpty()) {
         return;
     }
-    delete m_discoveryAgent;
-    m_discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
-    connect(m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered,
-            this, &BleManager::onDeviceDiscovered);
-    connect(m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished,
-            this, &BleManager::onDiscoveryFinished);
-    m_discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
+    const bluez::Reply reply = bluez::call(
+        QDBusConnection::systemBus(), QStringLiteral(ORG_BLUEZ), m_adapterPath,
+        IFACE_ADAPTER, QStringLiteral("StartDiscovery"));
+    if (!reply.ok) {
+        if (!reply.noReply) {
+            qWarning() << "StartDiscovery failed:" << reply.error;
+        }
+        return;
+    }
     m_scanning = true;
     Q_EMIT scanningChanged();
 }
@@ -110,40 +141,91 @@ void BleManager::stopScan()
     if (!m_scanning) {
         return;
     }
-    if (m_discoveryAgent) {
-        m_discoveryAgent->stop();
+    if (!m_adapterPath.isEmpty()) {
+        const bluez::Reply reply = bluez::call(
+            QDBusConnection::systemBus(), QStringLiteral(ORG_BLUEZ), m_adapterPath,
+            IFACE_ADAPTER, QStringLiteral("StopDiscovery"));
+        if (!reply.ok && !reply.noReply) {
+            qWarning() << "StopDiscovery failed:" << reply.error;
+        }
     }
     m_scanning = false;
     Q_EMIT scanningChanged();
 }
 
-void BleManager::onDiscoveryFinished()
+void BleManager::onAdapterPropertiesChanged(const QString &iface, const QVariantMap &changed, const QStringList &invalidated)
 {
-    if (m_scanning) {
+    Q_UNUSED(invalidated)
+    if (iface != QLatin1String(IFACE_ADAPTER)) {
+        return;
+    }
+    if (!changed.contains(QStringLiteral("Powered"))) {
+        return;
+    }
+    m_adapterOn = changed.value(QStringLiteral("Powered")).toBool();
+    if (!m_adapterOn && m_scanning) {
         m_scanning = false;
         Q_EMIT scanningChanged();
     }
+    Q_EMIT adapterOnChanged();
 }
 
-void BleManager::onDeviceDiscovered(const QBluetoothDeviceInfo &info)
+void BleManager::onManagerInterfacesAdded(const QString &path, const QVariantMap &interfaces)
 {
-    const QString name = info.name();
-    if (name.isEmpty() || !info.isValid()) {
+    const auto it = interfaces.find(QLatin1String(IFACE_DEVICE));
+    if (it == interfaces.end()) {
         return;
     }
+    const QVariantMap props = it.value().toMap();
+    const QString address = props.value(QStringLiteral("Address")).toString();
+    if (address.isEmpty()) {
+        return;
+    }
+    m_devicePaths.insert(address.toLower(), path);
+    const QString name = props.value(QStringLiteral("Name")).toString();
+    const QString alias = props.value(QStringLiteral("Alias")).toString();
+    const QString effective = !name.isEmpty() ? name : alias;
+    if (effective.isEmpty()) {
+        return;
+    }
+    handleDiscoveredDevice(effective, address);
+}
+
+void BleManager::onManagerInterfacesRemoved(const QString &path, const QStringList &removed)
+{
+    if (!removed.contains(QLatin1String(IFACE_DEVICE))) {
+        return;
+    }
+    // Look up the address of the forgotten device before dropping it.
+    const bluez::Reply address = bluez::call(
+        QDBusConnection::systemBus(), QStringLiteral(ORG_BLUEZ), path,
+        IFACE_PROPS, QStringLiteral("Get"),
+        {QVariant(QStringLiteral(IFACE_DEVICE)), QVariant(QStringLiteral("Address"))});
+    if (address.ok) {
+        m_devicePaths.remove(address.value.toString().toLower());
+    }
+}
+
+void BleManager::handleDiscoveredDevice(const QString &name, const QString &address)
+{
     const bool isLighthouse = name.startsWith(QLatin1String(LHB_PREFIX));
     const bool isVive = name.startsWith(QLatin1String(VIVE_PREFIX));
     if (!isLighthouse && !isVive) {
         return;
     }
 
-    const QString address = info.address().toString();
     LighthouseDevice *device = m_devices.value(address, nullptr);
     if (device) {
         // Refresh the display name to the latest advertisement.
         device->setNameIfNeeded(name);
+        // Reconnect if a previous connection went away.
+        if (!device->connected()) {
+            if (BluezDevice *bluez = bluezFor(address)) {
+                device->connectToDevice(bluez);
+            }
+        }
     } else {
-        device = createDevice(info);
+        device = createDevice(name, address);
     }
     if (device) {
         m_settings.addLastSeenDevice(address);
@@ -151,11 +233,24 @@ void BleManager::onDeviceDiscovered(const QBluetoothDeviceInfo &info)
     }
 }
 
-LighthouseDevice *BleManager::createDevice(const QBluetoothDeviceInfo &info)
+BluezDevice *BleManager::bluezFor(const QString &address)
 {
-    const QString name = info.name();
-    const QString address = info.address().toString();
+    const QString key = address.toLower();
+    BluezDevice *bluez = m_bluezDevices.value(key, nullptr);
+    if (bluez) {
+        return bluez;
+    }
+    const QString path = m_devicePaths.value(key);
+    if (path.isEmpty()) {
+        return nullptr;
+    }
+    bluez = new BluezDevice(path, this);
+    m_bluezDevices.insert(key, bluez);
+    return bluez;
+}
 
+LighthouseDevice *BleManager::createDevice(const QString &name, const QString &address)
+{
     LighthouseDevice *device;
     if (name.startsWith(QLatin1String(LHB_PREFIX))) {
         device = new LighthouseV2Device(address, name, this);
@@ -163,13 +258,44 @@ LighthouseDevice *BleManager::createDevice(const QBluetoothDeviceInfo &info)
         device = new ViveBaseStationDevice(address, name, this);
     }
 
-    auto *controller = QLowEnergyController::createCentral(info, this);
-    if (!controller) {
-        return device;
+    if (BluezDevice *bluez = bluezFor(address)) {
+        device->connectToDevice(bluez);
     }
-    device->connectToDevice(controller);
     m_devices.insert(address, device);
     return device;
+}
+
+void BleManager::seedKnownDevices()
+{
+    const bluez::Reply reply = bluez::call(
+        QDBusConnection::systemBus(), QStringLiteral(ORG_BLUEZ), QStringLiteral("/"),
+        IFACE_OBJECT_MANAGER, QStringLiteral("GetManagedObjects"));
+    if (!reply.ok) {
+        qWarning() << "BlueZ GetManagedObjects failed:" << reply.error;
+        return;
+    }
+    const QVariantMap managed = reply.value.toMap();
+    for (auto it = managed.constBegin(); it != managed.constEnd(); ++it) {
+        const QString path = it.key();
+        const QVariantMap interfaces = it.value().toMap();
+        const auto devIt = interfaces.find(QLatin1String(IFACE_DEVICE));
+        if (devIt == interfaces.end()) {
+            continue;
+        }
+        const QVariantMap props = devIt.value().toMap();
+        const QString address = props.value(QStringLiteral("Address")).toString();
+        if (address.isEmpty()) {
+            continue;
+        }
+        m_devicePaths.insert(address.toLower(), path);
+        const QString name = props.value(QStringLiteral("Name")).toString();
+        const QString alias = props.value(QStringLiteral("Alias")).toString();
+        const QString effective = !name.isEmpty() ? name : alias;
+        if (effective.isEmpty()) {
+            continue;
+        }
+        handleDiscoveredDevice(effective, address);
+    }
 }
 
 bool BleManager::pairDevice(const QString &address)

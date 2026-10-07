@@ -46,8 +46,11 @@ Kirigami.Page {
     onDeviceIdChanged: rebuildMetadataModel()
     Component.onCompleted: rebuildMetadataModel()
 
-    Kirigami.ColumnView {
-        Kirigami.ColumnView {
+    Column {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Column {
+            Layout.fillWidth: true
             Layout.fillHeight: true
             ListView {
                 model: metadataModel
@@ -64,7 +67,7 @@ Kirigami.Page {
             }
         }
 
-        Kirigami.ColumnView {
+        Column {
             RowLayout {
                 QQC2.ToolButton {
                     icon.name: "display-on"
@@ -95,7 +98,7 @@ Kirigami.Page {
 
         Kirigami.Separator {}
 
-        Kirigami.ColumnView {
+        Column {
             RowLayout {
                 Kirigami.Heading {
                     text: qsTr("Nickname")
@@ -114,7 +117,7 @@ Kirigami.Page {
 
         Kirigami.Separator {}
 
-        Kirigami.ColumnView {
+        Column {
             visible: device !== null && device.deviceType === "Vive base station"
             RowLayout {
                 Kirigami.Heading {
@@ -160,17 +163,15 @@ Kirigami.Page {
                 }
             }
         ]
-        Kirigami.ColumnView {
-            Kirigami.FormEntry {
-                QQC2.TextField {
-                    id: viveIdField
-                    text: ""
-                    placeholderText: qsTr("e.g. ABC1 (hint: %1)")
-                        .arg(bleManager.vivePairIdHint(page.deviceId))
-                    maximumLength: 8
-                    Layout.fillWidth: true
-                }
-            }
+    Column {
+        QQC2.TextField {
+            id: viveIdField
+            text: ""
+            placeholderText: qsTr("e.g. ABC1 (hint: %1)")
+                .arg(bleManager.vivePairIdHint(page.deviceId))
+            maximumLength: 8
+            Layout.fillWidth: true
         }
+    }
     }
 }

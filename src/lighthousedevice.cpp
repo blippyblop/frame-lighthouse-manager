@@ -1,10 +1,5 @@
 #include "lighthousedevice.h"
 
-#include <QLowEnergyController>
-#include <QLowEnergyService>
-#include <QLowEnergyCharacteristic>
-#include <QBluetoothUuid>
-
 namespace {
 // Standard GATT Device Information Service characteristic UUIDs.
 constexpr char MODEL_NUMBER[] = "00002a24-0000-1000-8000-00805f9b34fb";
@@ -12,8 +7,6 @@ constexpr char SERIAL_NUMBER[] = "00002a25-0000-1000-8000-00805f9b34fb";
 constexpr char FIRMWARE_REVISION[] = "00002a26-0000-1000-8000-00805f9b34fb";
 constexpr char HARDWARE_REVISION[] = "00002a27-0000-1000-8000-00805f9b34fb";
 constexpr char MANUFACTURER_NAME[] = "00002a29-0000-1000-8000-00805f9b34fb";
-
-constexpr char POWER_STATE_UNKNOWN_CHAR[] = "0000";
 } // namespace
 
 LighthouseDevice::LighthouseDevice(const QString &id, const QString &name, QObject *parent)
@@ -21,15 +14,14 @@ LighthouseDevice::LighthouseDevice(const QString &id, const QString &name, QObje
 {
     m_pollTimer.setInterval(minUpdateInterval());
     connect(&m_pollTimer, &QTimer::timeout, this, [this] {
-        if (m_connected && m_controller) {
-            pollState(m_controller);
+        if (m_connected && m_bluez) {
+            pollState();
         }
     });
 }
 
 LighthouseDevice::~LighthouseDevice()
 {
-    // Receiver-side connections are dropped automatically on destruction.
 }
 
 QString LighthouseDevice::displayName() const
@@ -50,73 +42,59 @@ void LighthouseDevice::setNickname(const QString &nickname)
     }
 }
 
-QLowEnergyService *LighthouseDevice::serviceFor(const QBluetoothUuid &uuid) const
+bool LighthouseDevice::hasCharacteristic(const QString &uuid) const
 {
-    if (!m_controller) {
-        return nullptr;
-    }
-    for (const QBluetoothUuid &serviceUuid : m_controller->services()) {
-        if (serviceUuid == uuid) {
-            return m_controller->createServiceObject(uuid);
-        }
-    }
-    return nullptr;
+    return m_bluez && m_bluez->hasCharacteristic(uuid);
 }
 
-QLowEnergyService *LighthouseDevice::serviceForCharacteristic(const QBluetoothUuid &charUuid) const
+void LighthouseDevice::readCharacteristic(const QString &uuid)
 {
-    if (!m_controller) {
-        return nullptr;
+    if (m_bluez) {
+        m_bluez->readCharacteristic(uuid);
     }
-    for (const QBluetoothUuid &serviceUuid : m_controller->services()) {
-        QLowEnergyService *service = m_controller->createServiceObject(serviceUuid);
-        if (service->characteristic(charUuid).uuid() == charUuid) {
-            return service;
-        }
-    }
-    return nullptr;
 }
 
-QLowEnergyCharacteristic LighthouseDevice::characteristicFor(const QBluetoothUuid &uuid) const
+bool LighthouseDevice::writeCharacteristic(const QString &uuid, const QByteArray &value, bool withoutResponse)
 {
-    if (!m_controller) {
-        return {};
+    if (!m_bluez || !m_bluez->hasCharacteristic(uuid)) {
+        return false;
     }
-    for (const QBluetoothUuid &serviceUuid : m_controller->services()) {
-        QLowEnergyService *service = m_controller->createServiceObject(serviceUuid);
-        const QLowEnergyCharacteristic characteristic = service->characteristic(uuid);
-        if (characteristic.uuid() == uuid) {
-            return characteristic;
-        }
-    }
-    return {};
+    m_bluez->writeCharacteristic(uuid, value, withoutResponse);
+    return true;
 }
 
-void LighthouseDevice::readStringCharacteristic(QLowEnergyController *controller, const QByteArray &uuid,
-                                                 const QString &metaKey)
+QString LighthouseDevice::characteristicPathInService(const QString &serviceUuid, const QString &uuid) const
 {
-    const QBluetoothUuid characteristicUuid(uuid);
-    for (const QBluetoothUuid &serviceUuid : controller->services()) {
-        QLowEnergyService *service = controller->createServiceObject(serviceUuid);
-        const QLowEnergyCharacteristic characteristic = service->characteristic(characteristicUuid);
-        if (characteristic.uuid() != characteristicUuid) {
-            continue;
-        }
-        service->discoverDetails();
-        // Read is async; the value arrives via characteristicRead.
-        connect(service, &QLowEnergyService::characteristicRead, this,
-                [this, characteristicUuid, metaKey](const QLowEnergyCharacteristic &c, const QByteArray &) {
-                    if (c.uuid() == characteristicUuid) {
-                        QString value = QString::fromUtf8(c.value()).trimmed();
-                        m_metadata.insert(metaKey, value);
-                        if (metaKey == QStringLiteral("Firmware version")) {
-                            m_firmwareVersion = value;
-                        }
-                        Q_EMIT metadataChanged();
-                    }
-                });
-        service->readCharacteristic(characteristic);
+    return m_bluez ? m_bluez->characteristicPathInService(serviceUuid, uuid) : QString();
+}
+
+void LighthouseDevice::writeCharacteristicPath(const QString &charPath, const QByteArray &value, bool withoutResponse)
+{
+    if (m_bluez) {
+        m_bluez->writeCharacteristicPath(charPath, value, withoutResponse);
+    }
+}
+
+void LighthouseDevice::readStringCharacteristic(const QString &uuid, const QString &metaKey)
+{
+    if (!hasCharacteristic(uuid)) {
         return;
+    }
+    m_metaKeysByUuid.insert(uuid, metaKey);
+    // Read is async; the value arrives through onCharacteristicRead().
+    readCharacteristic(uuid);
+}
+
+void LighthouseDevice::onCharacteristicRead(const QString &uuid, const QByteArray &value)
+{
+    const auto it = m_metaKeysByUuid.constFind(uuid);
+    if (it != m_metaKeysByUuid.constEnd()) {
+        const QString text = QString::fromUtf8(value).trimmed();
+        m_metadata.insert(it.value(), text);
+        if (it.value() == QStringLiteral("Firmware version")) {
+            m_firmwareVersion = text;
+        }
+        Q_EMIT metadataChanged();
     }
 }
 
@@ -129,55 +107,69 @@ void LighthouseDevice::setPowerState(int byte)
     }
 }
 
-void LighthouseDevice::connectToDevice(QLowEnergyController *controller)
+void LighthouseDevice::connectToDevice(BluezDevice *bluez)
 {
-    if (m_controller) {
+    if (!bluez) {
         return;
     }
-    m_controller = controller;
-    connect(controller, &QLowEnergyController::connected, this, [this] {
-        m_connected = true;
+    if (m_bluez == bluez) {
+        // Reconnect after a previous disconnect.
+        if (!m_connected) {
+            m_bluez->connectGatt();
+        }
+        return;
+    }
+    m_bluez = bluez;
+    connect(m_bluez, &BluezDevice::gattConnectedChanged, this, [this](bool connected) {
+        if (m_connected == connected) {
+            return;
+        }
+        m_connected = connected;
         Q_EMIT connectedChanged();
-        if (m_controller) {
-            m_controller->discoverServices();
+        if (!connected) {
+            m_valid = false;
+            m_pollTimer.stop();
+            onDisconnected();
         }
     });
-    connect(controller, &QLowEnergyController::disconnected, this, [this] {
-        m_connected = false;
-        m_valid = false;
-        m_pollTimer.stop();
-        Q_EMIT connectedChanged();
-        onDisconnected();
-        m_controller = nullptr;
-    });
-    connect(controller, &QLowEnergyController::discoveryFinished, this, [this] {
-        if (m_controller && onServicesDiscovered(m_controller)) {
+    connect(m_bluez, &BluezDevice::discoveryFinished, this, [this] {
+        if (!m_bluez) {
+            return;
+        }
+        if (onServicesDiscovered()) {
             m_valid = true;
             m_pollTimer.start();
         } else {
-            if (m_controller) {
-                m_controller->disconnectFromDevice();
+            m_bluez->disconnectGatt();
+        }
+    });
+    connect(m_bluez, &BluezDevice::characteristicRead, this, [this](const QString &uuid, const QByteArray &value) {
+        onCharacteristicRead(uuid, value);
+    });
+    connect(m_bluez, &BluezDevice::nameChanged, this, [this](const QString &name) {
+        setNameIfNeeded(name);
+    });
+    // If discovery already ran (cached GATT DB), handle it immediately.
+    if (m_bluez->discoveryDone()) {
+        if (onServicesDiscovered()) {
+            m_valid = true;
+            if (m_connected) {
+                m_pollTimer.start();
             }
         }
-    });
-    connect(controller, &QLowEnergyController::serviceDiscovered, this, [this](const QBluetoothUuid &uuid) {
-        if (!m_valid && m_controller) {
-            // Metadata characteristics may arrive with each service; collect on discoveryFinished instead.
-        }
-        Q_UNUSED(uuid);
-    });
-    controller->connectToDevice();
+    }
+    m_bluez->connectGatt();
 }
 
 void LighthouseDevice::disconnect()
 {
     m_pollTimer.stop();
-    if (m_controller && m_controller->state() != QLowEnergyController::UnconnectedState) {
-        m_controller->disconnectFromDevice();
+    if (m_bluez) {
+        m_bluez->disconnectGatt();
     }
     m_connected = false;
-    Q_EMIT connectedChanged();
     m_valid = false;
+    Q_EMIT connectedChanged();
 }
 
 bool LighthouseDevice::changeState(int newState)
@@ -190,20 +182,19 @@ void LighthouseDevice::identify()
 {
 }
 
-bool LighthouseDevice::onServicesDiscovered(QLowEnergyController *controller)
+bool LighthouseDevice::onServicesDiscovered()
 {
     // Read standard metadata characteristics (best effort).
-    readStringCharacteristic(controller, MODEL_NUMBER, QStringLiteral("Model number"));
-    readStringCharacteristic(controller, SERIAL_NUMBER, QStringLiteral("Serial number"));
-    readStringCharacteristic(controller, FIRMWARE_REVISION, QStringLiteral("Firmware version"));
-    readStringCharacteristic(controller, HARDWARE_REVISION, QStringLiteral("Hardware revision"));
-    readStringCharacteristic(controller, MANUFACTURER_NAME, QStringLiteral("Manufacturer name"));
+    readStringCharacteristic(MODEL_NUMBER, QStringLiteral("Model number"));
+    readStringCharacteristic(SERIAL_NUMBER, QStringLiteral("Serial number"));
+    readStringCharacteristic(FIRMWARE_REVISION, QStringLiteral("Firmware version"));
+    readStringCharacteristic(HARDWARE_REVISION, QStringLiteral("Hardware revision"));
+    readStringCharacteristic(MANUFACTURER_NAME, QStringLiteral("Manufacturer name"));
     return true;
 }
 
-void LighthouseDevice::pollState(QLowEnergyController *controller)
+void LighthouseDevice::pollState()
 {
-    Q_UNUSED(controller);
 }
 
 void LighthouseDevice::onDisconnected()

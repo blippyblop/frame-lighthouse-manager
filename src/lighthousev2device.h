@@ -20,7 +20,7 @@ public:
     void identify() override;
 
 protected:
-    bool onServicesDiscovered(QLowEnergyController *controller) override;
-    void pollState(QLowEnergyController *controller) override;
-    void onDisconnected() override;
+    bool onServicesDiscovered() override;
+    void pollState() override;
+    void onCharacteristicRead(const QString &uuid, const QByteArray &value) override;
 };

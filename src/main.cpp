@@ -28,13 +28,15 @@ int main(int argc, char **argv)
     QQmlComponent component(&engine, QUrl(QStringLiteral("qrc:/qt/qml/lighthousepm/src/qml/main.qml")));
     if (component.isError()) {
         qWarning() << "QML load error:" << component.errorString();
-        qWarning() << component.errors();
+        for (const QQmlError &e : component.errors()) {
+            qWarning() << e.url().toString() << ":" << e.line() << e.description();
+        }
         return 1;
     }
 
     QObject *window = component.create();
     if (!window) {
-        qWarning() << "Failed to create main window";
+        qWarning() << "QML window creation failed";
         return 1;
     }
 

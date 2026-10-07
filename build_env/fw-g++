@@ -1,0 +1,53 @@
+#!/bin/sh
+# Cross compiler wrapper for building against the SteamOS firmware sysroot.
+#
+# Compile mode (-c etc.): the newlib g++ frontend, pointed at the firmware
+# sysroot so all C headers come from the firmware's glibc.
+#
+# Link mode: -nodefaultlibs so no newlib runtime is pulled in; the firmware
+# glibc start files and shared libraries are added explicitly, and the
+# dynamic linker is the firmware's ld-linux-aarch64.
+#
+# Usage: fw-g++ [args...]
+# SYSROOT may be set in the environment; defaults to ./frame-sysroot.
+: "${SYSROOT:=$(cd "$(dirname "$0")" && pwd)/frame-sysroot}"
+
+# The target triplet is aarch64-none-elf, but we compile against the
+# firmware's glibc/Linux environment, so define the OS macros that a real
+# aarch64-linux target would predefine (Qt's OS detection needs __linux__).
+OSDEFS="-D__linux__ -D__unix__"
+
+# Informational invocations pass straight through to the real compiler.
+for a in "$@"; do
+    case "$a" in
+        -v|-V|--version|--print-*)
+            exec /usr/bin/aarch64-none-elf-g++ \
+                --sysroot="$SYSROOT" -isystem "$SYSROOT/usr/include" $OSDEFS "$@" ;;
+    esac
+done
+
+mode=link
+for a in "$@"; do
+    case "$a" in
+        -c|-E|-M|-MM) mode=compile ;;
+    esac
+done
+
+if [ "$mode" = compile ]; then
+    exec /usr/bin/aarch64-none-elf-g++ \
+        --sysroot="$SYSROOT" -isystem "$SYSROOT/usr/include" $OSDEFS \
+        "$@"
+fi
+
+# -L must precede "$@" so that -l:libX in "$@" can find firmware libraries.
+# -nostdlib suppresses every default startup file and library; the firmware
+# glibc start files and libraries are added explicitly.
+# The sysroot is usrmerged: everything (crt files, ld.so) lives in /usr/lib.
+exec /usr/bin/aarch64-none-elf-g++ -nostdlib \
+    --sysroot="$SYSROOT" -isystem "$SYSROOT/usr/include" $OSDEFS \
+    -L"$SYSROOT/usr/lib" \
+    "$@" \
+    "$SYSROOT/usr/lib/Scrt1.o" "$SYSROOT/usr/lib/crti.o" \
+    -l:libstdc++.so.6 -l:libgcc_s.so.1 -l:libc.so.6 -lm \
+    "$SYSROOT/usr/lib/crtn.o" \
+    -Wl,--dynamic-linker="$SYSROOT/usr/lib/ld-linux-aarch64.so.1"

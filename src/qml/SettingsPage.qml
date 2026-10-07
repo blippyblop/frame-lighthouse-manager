@@ -16,7 +16,11 @@ Kirigami.Page {
         }
     ]
 
-    Kirigami.ColumnView {
+    Column {
+        spacing: Kirigami.Units.smallSpacing
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+
         Kirigami.Heading {
             text: "Lighthouse Power management"
             level: 1
@@ -24,47 +28,64 @@ Kirigami.Page {
 
         Kirigami.Separator {}
 
-        Kirigami.Form {
-            Kirigami.FormGroup {
-                title: qsTr("Power")
-
-                Kirigami.FormEntry {
-                    title: qsTr("Use STANDBY instead of SLEEP")
-                    subtitle: qsTr("Only V2 lighthouses support standby.")
-                    contentItem: QQC2.Switch {
-                        id: standbySwitch
-                        checked: settingsStore.useStandby()
-                        onToggled: settingsStore.setUseStandby(checked)
-                    }
+        Kirigami.Heading {
+            text: qsTr("Power")
+            level: 3
+        }
+        Column {
+            RowLayout {
+                spacing: Kirigami.Units.smallSpacing
+                QQC2.Label {
+                    text: qsTr("Use STANDBY instead of SLEEP")
+                    Layout.preferredWidth: 260
+                    horizontalAlignment: Text.AlignRight
+                }
+                QQC2.Switch {
+                    id: standbySwitch
+                    checked: settingsStore.useStandby()
+                    onToggled: settingsStore.setUseStandby(checked)
                 }
             }
+            QQC2.Label {
+                text: qsTr("Only V2 lighthouses support standby.")
+                color: Kirigami.Theme.disabledTextColor
+            }
+        }
 
-            Kirigami.FormGroup {
-                title: qsTr("Intervals")
-
-                Kirigami.FormEntry {
-                    title: qsTr("Scan duration")
-                    contentItem: QQC2.SpinBox {
-                        id: scanDurationBox
-                        from: 10
-                        to: 600
-                        stepSize: 10
-                        value: settingsStore.scanDuration()
-                        onValueChanged: settingsStore.setScanDuration(value)
-                    }
-                }
-
-                Kirigami.FormEntry {
-                    title: qsTr("Update interval")
-                    contentItem: QQC2.SpinBox {
-                        id: updateIntervalBox
-                        from: 1
-                        to: 60
-                        stepSize: 1
-                        value: settingsStore.updateInterval()
-                        onValueChanged: settingsStore.setUpdateInterval(value)
-                    }
-                }
+        Kirigami.Heading {
+            text: qsTr("Intervals")
+            level: 3
+        }
+        RowLayout {
+            spacing: Kirigami.Units.smallSpacing
+            QQC2.Label {
+                text: qsTr("Scan duration")
+                Layout.preferredWidth: 260
+                horizontalAlignment: Text.AlignRight
+            }
+            QQC2.SpinBox {
+                id: scanDurationBox
+                from: 10
+                to: 600
+                stepSize: 10
+                value: settingsStore.scanDuration()
+                onValueChanged: settingsStore.setScanDuration(value)
+            }
+        }
+        RowLayout {
+            spacing: Kirigami.Units.smallSpacing
+            QQC2.Label {
+                text: qsTr("Update interval")
+                Layout.preferredWidth: 260
+                horizontalAlignment: Text.AlignRight
+            }
+            QQC2.SpinBox {
+                id: updateIntervalBox
+                from: 1
+                to: 60
+                stepSize: 1
+                value: settingsStore.updateInterval()
+                onValueChanged: settingsStore.setUpdateInterval(value)
             }
         }
 
@@ -72,14 +93,17 @@ Kirigami.Page {
             text: qsTr("Lighthouses with nicknames")
             level: 3
         }
-        Kirigami.ColumnView {
+        Column {
             Layout.fillHeight: true
+            Layout.fillWidth: true
             ListView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 model: nicknameListModel
                 delegate: Item {
                     required property var model
                     height: Kirigami.Units.gridSize * 2
-                    Kirigami.ColumnView {
+                    Column {
                         RowLayout {
                             Layout.fillWidth: true
                             Kirigami.Heading {
@@ -106,7 +130,8 @@ Kirigami.Page {
 
         Kirigami.Separator {}
 
-        Kirigami.ColumnView {
+        Column {
+            spacing: Kirigami.Units.smallSpacing
             QQC2.ToolButton {
                 icon.name: "edit-clear-all"
                 text: qsTr("Clear all last seen devices")
@@ -115,8 +140,6 @@ Kirigami.Page {
                     nicknameListModel.refresh()
                 }
             }
-        }
-        Kirigami.ColumnView {
             QQC2.ToolButton {
                 icon.name: "edit-clear-all"
                 text: qsTr("Clear all Vive base station ids")

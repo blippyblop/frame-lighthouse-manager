@@ -2,3 +2,5 @@ build-aarch64/
 build/
 flatpak-build/
 dist/
+build-frame/
+build_env/frame-sysroot/

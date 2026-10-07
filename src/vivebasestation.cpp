@@ -1,12 +1,5 @@
 #include "vivebasestation.h"
 
-#include <QLowEnergyController>
-#include <QLowEnergyService>
-#include <QLowEnergyCharacteristic>
-#include <QBluetoothUuid>
-
-#include <QtEndian>
-
 namespace {
 constexpr uchar COMMAND_HEADER = 0x12;
 constexpr uchar ACTION_ON = 0x00;
@@ -47,7 +40,7 @@ void ViveBaseStationDevice::setPairId(int id)
     m_pairId = id;
     if (id >= 0) {
         m_metadata.insert(QStringLiteral("Id"),
-                          QStringLiteral("0x%1").arg(id, 8, 16, QLatin1Char('0')).toUpper());
+                           QStringLiteral("0x%1").arg(id, 8, 16, QLatin1Char('0')).toUpper());
     } else {
         m_metadata.insert(QStringLiteral("Id"), QString());
     }
@@ -60,24 +53,19 @@ bool ViveBaseStationDevice::hasPairId() const
     return m_pairId >= 0;
 }
 
-bool ViveBaseStationDevice::onServicesDiscovered(QLowEnergyController *controller)
+bool ViveBaseStationDevice::onServicesDiscovered()
 {
-    if (!LighthouseDevice::onServicesDiscovered(controller)) {
+    if (!LighthouseDevice::onServicesDiscovered()) {
         return false;
     }
-    m_powerCharacteristic = characteristicFor(QBluetoothUuid(POWER_CHARACTERISTIC));
-    if (m_powerCharacteristic.uuid() != QBluetoothUuid(POWER_CHARACTERISTIC)) {
+    if (!hasCharacteristic(POWER_CHARACTERISTIC)) {
         return false;
-    }
-    if (QLowEnergyService *service = serviceForCharacteristic(QBluetoothUuid(POWER_CHARACTERISTIC))) {
-        service->discoverDetails();
     }
     return true;
 }
 
-void ViveBaseStationDevice::pollState(QLowEnergyController *controller)
+void ViveBaseStationDevice::pollState()
 {
-    Q_UNUSED(controller)
     // No state readback for Vive base stations: the state is derived from
     // whether a pair id is stored.
     const Power::State state = hasPairId() ? Power::Unknown : Power::Booting;
@@ -89,14 +77,14 @@ void ViveBaseStationDevice::pollState(QLowEnergyController *controller)
 
 bool ViveBaseStationDevice::changeState(int newState)
 {
-    if (m_powerCharacteristic.uuid() != QBluetoothUuid(POWER_CHARACTERISTIC) || !m_controller) {
+    if (!m_bluez || !m_bluez->gattConnected()) {
         return false;
     }
-    QLowEnergyService *service = serviceFor(QBluetoothUuid(POWER_SERVICE));
-    if (!service) {
-        service = serviceForCharacteristic(QBluetoothUuid(POWER_CHARACTERISTIC));
+    QString charPath = characteristicPathInService(POWER_SERVICE, POWER_CHARACTERISTIC);
+    if (charPath.isEmpty()) {
+        charPath = m_bluez->characteristicPath(POWER_CHARACTERISTIC);
     }
-    if (!service) {
+    if (charPath.isEmpty()) {
         return false;
     }
     if (!hasPairId()) {
@@ -128,12 +116,6 @@ bool ViveBaseStationDevice::changeState(int newState)
     command[6] = static_cast<char>((idLE >> 16) & 0xff);
     command[7] = static_cast<char>((idLE >> 24) & 0xff);
 
-    service->writeCharacteristic(m_powerCharacteristic, command,
-                                 QLowEnergyService::WriteWithoutResponse);
+    writeCharacteristicPath(charPath, command, true);
     return true;
-}
-
-void ViveBaseStationDevice::onDisconnected()
-{
-    m_powerCharacteristic = QLowEnergyCharacteristic();
 }

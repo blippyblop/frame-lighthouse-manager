@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Qml Quick Bluetooth)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Qml Quick DBus)
 find_package(KF6CoreAddons REQUIRED)
 find_package(KF6Config REQUIRED)
 find_package(KF6I18n REQUIRED)
@@ -17,6 +17,7 @@ qt_policy(SET QTP0004 NEW)
 
 add_executable(lighthouse-pm
     src/main.cpp
+    src/bluez.cpp
     src/blemanager.cpp
     src/lighthousedevice.cpp
     src/lighthousev2device.cpp
@@ -42,7 +43,7 @@ target_link_libraries(lighthouse-pm
         Qt6::Gui
         Qt6::Qml
         Qt6::Quick
-        Qt6::Bluetooth
+        Qt6::DBus
         KF6::CoreAddons
         KF6::ConfigCore
         KF6::I18n

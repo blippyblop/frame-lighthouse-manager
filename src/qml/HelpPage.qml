@@ -16,7 +16,9 @@ Kirigami.Page {
         }
     ]
 
-    Kirigami.ColumnView {
+    Column {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
         Kirigami.Heading {
             text: qsTr("Pairing a device")
             level: 3

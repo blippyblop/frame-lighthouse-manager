@@ -1,18 +1,18 @@
 #pragma once
 
+#include <QByteArray>
+#include <QHash>
 #include <QObject>
-#include <QVariantMap>
 #include <QPointer>
 #include <QTimer>
-#include <QBluetoothUuid>
-#include <QLowEnergyCharacteristic>
+#include <QVariantMap>
 
+#include "bluez.h"
 #include "powerstate.h"
 
-class QLowEnergyController;
-class QLowEnergyService;
-
 // Base class for a lighthouse that can be controlled over BLE.
+// The GATT side is driven through BlueZ D-Bus (see BluezDevice) since the
+// SteamOS Frame does not ship QtBluetooth.
 // Handles connection lifecycle, metadata reading and power polling.
 class LighthouseDevice : public QObject
 {
@@ -60,7 +60,7 @@ public:
     Q_INVOKABLE virtual bool changeState(int newState);
     Q_INVOKABLE virtual void identify();
 
-    void connectToDevice(QLowEnergyController *controller);
+    void connectToDevice(BluezDevice *bluez);
     void disconnect();
 
     // Map a device specific state byte to a global state.
@@ -76,18 +76,23 @@ Q_SIGNALS:
     void metadataChanged();
 
 protected:
-    // Called once the controller has finished service discovery.
-    virtual bool onServicesDiscovered(QLowEnergyController *controller);
+    // Called once GATT service discovery has completed.
+    virtual bool onServicesDiscovered();
     // Called on every poll tick while connected; subclasses read state.
-    virtual void pollState(QLowEnergyController *controller);
+    virtual void pollState();
     // Called when the device disconnects.
     virtual void onDisconnected();
+    // Called for every GATT characteristic value that was read.
+    virtual void onCharacteristicRead(const QString &uuid, const QByteArray &value);
 
-    QLowEnergyService *serviceFor(const QBluetoothUuid &uuid) const;
-    // Find the service that owns the characteristic with the given UUID.
-    QLowEnergyService *serviceForCharacteristic(const QBluetoothUuid &charUuid) const;
-    QLowEnergyCharacteristic characteristicFor(const QBluetoothUuid &uuid) const;
-    void readStringCharacteristic(QLowEnergyController *controller, const QByteArray &uuid, const QString &metaKey);
+    bool hasCharacteristic(const QString &uuid) const;
+    void readCharacteristic(const QString &uuid);
+    bool writeCharacteristic(const QString &uuid, const QByteArray &value, bool withoutResponse = true);
+    // Characteristic path inside a specific service ("" if not found there).
+    QString characteristicPathInService(const QString &serviceUuid, const QString &uuid) const;
+    void writeCharacteristicPath(const QString &charPath, const QByteArray &value, bool withoutResponse = true);
+
+    void readStringCharacteristic(const QString &uuid, const QString &metaKey);
 
     void setPowerState(int byte);
 
@@ -100,11 +105,9 @@ protected:
     int m_powerStateByte = -1;
     QString m_firmwareVersion;
     QVariantMap m_metadata;
+    QHash<QString, QString> m_metaKeysByUuid;
 
-    QPointer<QLowEnergyController> m_controller;
-    QPointer<QLowEnergyService> m_service;
-    QLowEnergyCharacteristic m_powerCharacteristic;
-    QLowEnergyCharacteristic m_identifyCharacteristic;
+    QPointer<BluezDevice> m_bluez;
     QTimer m_pollTimer;
     bool m_valid = false;
 };
