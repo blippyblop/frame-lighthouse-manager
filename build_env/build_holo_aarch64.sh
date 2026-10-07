@@ -66,8 +66,8 @@ du -sh "$ROOTFS"
 log "[4/6] preparing chroot (dev nodes, resolv, mounts)"
 cp /etc/resolv.conf "$ROOTFS/etc/resolv.conf"
 
-# minimal /dev for a headless build (null/zero/full/urandom/random/tty/ptmx)
-$SUDO mkdir -p "$ROOTFS/dev/pts"
+# Valve's packaging strips /dev /proc /sys from the rootfs -- recreate them
+$SUDO mkdir -p "$ROOTFS/dev/pts" "$ROOTFS/proc" "$ROOTFS/sys"
 mknod_pair() { [ -e "$ROOTFS/dev/$1" ] || $SUDO mknod -m 666 "$ROOTFS/dev/$1" c "$2" "$3"; }
 mknod_pair null    1 3
 mknod_pair zero    1 5
