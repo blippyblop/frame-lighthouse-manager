@@ -49,9 +49,12 @@ target_link_libraries(lighthouse-pm
         KF6::Kirigami
 )
 
-# QML import path for the Kirigami module (cross build).
-set_target_properties(lighthouse-pm PROPERTIES
-    QT_QML_IMPORT_PATH "/opt/aarch64-sysroot/usr/lib/qt6/qml"
-)
+# Optional build-time QML import path (e.g. for cross builds). Native builds
+# leave it unset so Qt resolves modules from its own install location.
+if(DEFINED QT_QML_IMPORT_PATH AND NOT QT_QML_IMPORT_PATH STREQUAL "")
+    set_target_properties(lighthouse-pm PROPERTIES
+        QT_QML_IMPORT_PATH "${QT_QML_IMPORT_PATH}"
+    )
+endif()
 
 install(TARGETS lighthouse-pm RUNTIME DESTINATION bin)

@@ -1,0 +1,48 @@
+{
+  "id": "io.github.blippyblop.lighthouse-pm",
+  "runtime": "org.kde.Platform",
+  "runtime-version": "6.11",
+  "sdk": "org.kde.Sdk",
+  "appstream-compat": true,
+  "separate-locales": false,
+  "rename-desktop-entry": "lighthouse-pm",
+  "build-options": {
+    "cxx-autotools": false
+  },
+  "modules": [
+    {
+      "name": "lighthouse-pm",
+      "buildsystem": "cmake",
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_INSTALL_PREFIX=/app"
+      ],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "../../"
+        }
+      ],
+      "cleanup": [
+        "/include",
+        "/lib/*.a",
+        "/lib/pkgconfig",
+        "/share/pkgconfig",
+        "/share/cmake",
+        "/man",
+        "/share/man",
+        "/share/zsh"
+      ]
+    }
+  ],
+  "finish-args": [
+    "--share=ipc",
+    "--socket=bluetooth",
+    "--socket=system-bus",
+    "--talk-name=org.bluez",
+    "--talk-name=org.kde.KGlobalSettings",
+    "--talk-name=org.kde.kconfig.notify",
+    "--filesystem=xdg-config/kdeglobals:ro",
+    "--env=LD_LIBRARY_PATH=/app/lib"
+  ]
+}

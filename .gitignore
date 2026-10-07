@@ -1,2 +1,4 @@
 build-aarch64/
+build/
+flatpak-build/
 dist/

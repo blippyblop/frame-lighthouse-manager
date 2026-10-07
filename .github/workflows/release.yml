@@ -2,44 +2,92 @@ name: release
 
 on:
   push:
+    branches: [ main ]
     tags:
       - "v*"
   workflow_dispatch:
 
 jobs:
+  # Build the aarch64 binary natively inside Arch Linux aarch64 (the Frame's
+  # distro), so it links against the exact libraries the device ships and runs
+  # there without bundling anything. Runs under qemu on GHA's x86 runner.
   build-aarch64:
     runs-on: ubuntu-latest
-    container:
-      image: alpine:3.24
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install host packages
+      - name: Build + smoke test in Arch aarch64
         run: |
-          apk add --no-cache gcc-aarch64-none-elf g++-aarch64-none-elf \
-            binutils-aarch64-none-elf newlib-aarch64-none-elf \
-            cmake make qemu-aarch64 python3 file
+          docker run --rm --platform linux/arm64 \
+            -v "$GITHUB_WORKSPACE:/src" -w /src \
+            archlinux/archlinux:latest \
+            /bin/bash /src/build_env/build_arch_aarch64.sh
 
-      - name: Build aarch64 sysroot (Qt6/KF6/Kirigami/BlueZ)
-        run: python3 build_env/build_sysroot.py
-
-      - name: Use musl headers instead of newlib
-        run: sh build_env/fix_cross_headers.sh
-
-      - name: Wrap sysroot Qt tools with qemu
-        run: sh build_env/wrap_sysroot_qemu.sh
-
-      - name: Build and smoke test
-        run: ./build.sh
+      - name: Host-side binary inspection
+        run: |
+          file build/lighthouse-pm
+          echo "=== NEEDED (host readelf) ==="
+          readelf -d build/lighthouse-pm | grep -E "NEEDED" || true
 
       - name: Package
         run: |
           mkdir -p dist
-          cp build-aarch64/lighthouse-pm dist/lighthouse-pm-aarch64
+          cp build/lighthouse-pm dist/lighthouse-pm-aarch64
+          cp assets/icon.png dist/ 2>/dev/null || true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-pm-aarch64
+          path: |
+            dist/lighthouse-pm-aarch64
+            dist/icon.png
 
       - name: Create release
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/lighthouse-pm-aarch64
+          files: |
+            dist/lighthouse-pm-aarch64
+            dist/icon.png
           generate_release_notes: true
+
+  # Self-contained flatpak (bundles the KDE platform runtime) for aarch64 KDE
+  # desktops. Built with flatpak-builder against org.kde.Sdk.
+  flatpak-aarch64:
+    needs: [ build-aarch64 ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install flatpak + qemu
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder qemu-user-static
+
+      - name: Add flathub remote
+        run: |
+          flatpak remote-add --if-not-exists --user flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Build flatpak (aarch64)
+        run: |
+          flatpak-builder --user --force-clean --arch=aarch64 \
+            --build-dir=flatpak-build \
+            dist/ build_env/flatpak/manifest.json
+
+      - name: List bundle
+        run: ls -la dist/
+
+      - name: Upload flatpak artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-pm-aarch64-flatpak
+          path: dist/*.flatpak
+
+      - name: Upload flatpak to release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.flatpak
+          generate_release_notes: false
