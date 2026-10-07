@@ -1,0 +1,74 @@
+{
+  "query": "SteamOS Devkit Client Android APK Steam Linux Runtime ARM64 build",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://mlq.ai/news/valves-steamos-stack-now-covers-windows-x86-and-android-on-arm",
+      "title": "Valve’s SteamOS stack now covers Windows, x86 and Android on Arm | MLQ News",
+      "content": "## The developer workflow is explicit\n\nSteam Frame’s development tools expose the distinction among the runtimes. Valve’s Devkit Client lets developers select Android for an APK, Steam Linux Runtime 3.0 ARM64 for a native Linux build or Steam Play for a Windows executable. Developers must enable Developer Mode, pair the headset with a host PC and upload the build through the SteamOS Devkit Client. ( [...] The result is not one universal compatibility layer. A Windows x86 game may use Proton and FEX together, a developer can ship a native Linux ARM64 binary, and a studio with an Android VR build can upload an APK through Steamworks. Valve’s guidance says most developers should start with their existing Windows x86 version, while VR teams with an existing Android Arm64 build may have a better fit for that route. (\n\n## Proton and FEX solve different problems\n\nProton addresses the operating-system and graphics interface gap. Valve describes it as a modified version of Wine combined with components such as DXVK, which translates DirectX calls to Vulkan, Steam Frame’s native graphics API. Proton is therefore the path for Windows software running on SteamOS. ( [...] The route is not simply a matter of uploading any mobile package and assuming it will behave like a PC game. Valve’s engine guidance recommends Android 10 or Linux ARM64 for new Steam Frame development. Its Unity guidance specifies ARM64, recommends Vulkan or OpenGL, and calls for Steam Frame Controller support through the relevant OpenXR interaction profile. ( Those requirements make Android compatibility useful for developers with an existing mobile VR pipeline, but they do not eliminate testing for input, graphics, performance and platform services.\n\n## The developer workflow is explicit",
+      "score": 0.8921218,
+      "raw_content": null,
+      "id": "342c3c-00"
+    },
+    {
+      "url": "https://partner.steamgames.com/doc?q=linux+steamos",
+      "title": "Search Results: linux steamos (Steamworks Documentation)",
+      "content": "[section]Deploying with the SteamOS DevKit Client[/section] Launch the SteamOS DevKit Client from Steam. Under Devkits you'll find [b]Connect to devkit by IP[/b] where you can put in [b]frame[/b] or your custom hostname if you've changed it. …\n\nThis will upload everything from the selected directory recursively. [\\][b]Start Command[/b]: If you made an APK put in the name of your APK. If you made a Linux or Windows build it should be the relative path (from the Local Folder) to the Linux binary or Windows executable (.exe) [\\][b]Runtime[/b]: Select [b]Android[/b] if its an APK, [b]Steam Linux Runtime 3.0 ARM64 (Sniper)[/b] if you made a Linux ARM64 binary. …\n\nWhat games can run standalone on Steam Frame [...] [section]Steamworks SDK[/section] Releases of the [doclink=sdk][/doclink] starting with version 1.63 have included libraries that will let it work on Android ARM64 and Linux ARM64. [section]Deploying binaries[/section] The [doclink=steamframe/loadgames]SteamOS Devkit Client[/doclink] provides an easy interface to repeatedly deploy APKs, Linux binaries, and Windows binaries. …\n\nAction Manifest Files \n\nSteamworks Documentation > Features > Steam Input > Action Manifest Files [...] Custom Engines \n\nSteamworks Documentation > Steam Hardware > Steam Frame > OpenXR Game Engine Integrations > Custom Engines\n\nAndroid development is pretty straight forward with the exception of needing to launch Lepton Development and connect via adb before deploying to the headset. For Linux ARM64 development we recommend using the SteamOS Devkit Client. You can find more information about this in the on the [doclink=steamframe/loadgames][/doclink] page. …",
+      "score": 0.81025416,
+      "raw_content": null,
+      "id": "885887-01"
+    },
+    {
+      "url": "https://github.com/The412Banner/DroidDeck",
+      "title": "GitHub - The412Banner/DroidDeck: DroidDeck: Valve's native ARM64 Linux Steam client on Android - gamescope + proot + in-app Wayland compositor · GitHub",
+      "content": "## Repository files navigation\n\nDroidDeck\n\nDroidDeck brings the SteamOS experience to Android: Valve's Steam client in Big Picture on your Adreno handheld, with Windows games through Valve's ARM64 Proton.\n\n## Requirements and install\n\nUse Android 9 or newer on a supported Adreno device (730 or newer, or 8xx). Mali, Xclipse, PowerVR, and Adreno 710 are unsupported. No root is required. Allow about 3 GB for the runtime and 1.1 GB more for the desktop and emulators. Install the APK from Releases, install the Linux runtime, then press Play and sign in. Steam downloads on first launch. Install Desktop & apps to use the desktop and emulators. The Store installs Linux apps and games from Flathub (ARM64 builds) with Flatpak; see docs/development/flatpak.md. [...] On Android 12+, if Steam exits without a log, turn off Restrict child processes in Developer options.\n\n## Build\n\nRun `tools/build_local.sh` with Docker, Java 17, the Android SDK/NDK, and `zstd` installed. It builds the ARM64 audio sinks from PulseAudio 13.0 and packages them into the APK at `app/build/outputs/apk/release/app-release.apk`. Set `DROIDDECK_PA13_SOURCE_DIR` to an existing PulseAudio 13.0 source directory to skip downloading it. To install the APK on an attached device, run `tools/deploy_local.sh`.\n\n## Limits\n\nCompatibility and performance vary by device; hardware validation is limited. Desktop compositing uses software rendering. Firefox sandboxing is reduced under proot. See the session logs in `Download/DroidDeck/` when diagnosing problems.\n\n## Credits and licence [...] ## Credits and licence\n\nGPL-3.0. Runtime, shim, input, and controller work build on WinNative and Bannerlator (maxjivi05). See LICENSE. Steam and Proton belong to Valve Corporation; this project is not affiliated with Valve.\n\n## About\n\nDroidDeck: Valve's native ARM64 Linux Steam client on Android - gamescope + proot + in-app Wayland compositor\n\n### Resources\n\nGPL-3.0 license\n\n### Stars\n\n41 stars\n\n### Watchers\n\n4 watching\n\n### Forks\n\n4 forks\n\nReport repository\n\nYou can’t perform that action at this time.",
+      "score": 0.7327644,
+      "raw_content": null,
+      "id": "5bece4-02"
+    },
+    {
+      "url": "https://www.reddit.com/r/linux_gaming/comments/1wn0x96/you_can_now_run_valves_official_native_arm64",
+      "title": "You can now run Valve's official native ARM64 Linux Steam ...",
+      "content": "You can now run Valve's official native ARM64 Linux Steam client on unrooted Android. steam/steam deck · r/EmulationOnAndroid • 15 days ago.",
+      "score": 0.57236487,
+      "raw_content": null,
+      "id": "66da34-03"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=70_9-W9MbqY",
+      "title": "SteamOS on Android Is REAL! Turn Your Android Phone into a Steam Deck!",
+      "content": "[0:35] Android, allowing the real Steam client to run on supported ARM 64 Android devices without relying on cloud gaming\n[0:42] or PC streaming. Droid Deck is an open-source project primarily developed by the 412 banner with contributions\n[0:49] from developer XXJSON Derulo XX and MaxJV05. It combines the Steam client with Valve's ARM 64 Proton and other\n[0:58] Linux components to run compatible Windows games locally on Android. Now comes the part where Droid Deck is actually usable. The project is\n[1:05] available through its official GitHub repository and has already received multiple releases with version 0.3.0 being the current version for this test.\n[1:14] Droid Deck comes in four variants onu, Ludashi, PUBG, and standard. The ON22 and Ludashi versions are intended for [...] ### Transcript\n[0:00] What if you could make your Android phone feel more like a Steam Deck?\n[0:03] Developers are experimenting with ARM 64 Linux environments on Android that can run Steam and PC games on compatible devices without relying on cloud gaming\n[0:12] or traditional Windows emulation. Games like GTA 5, The Witcher 3, Hitman, and many more are being tested on compatible\n[0:19] Android devices. But how well does this actually work? What hardware do you need? And can older or Molly powered devices run it? Let's put it to the test\n[0:26] and find out. The idea here isn't to install the official Steam OS directly on an Android phone. Instead, Droid Deck brings the Steam OS experience to [...] [1:21] testing, while the PUBG version is optimized specifically for PUBG Mobile.\n[1:26] For general gaming and everyday use, the standard version is the recommended option. When you open Droid Deck, it will ask for a few permissions so Droid\n[1:33] Deck can use your phone storage. After that, you'll reach the homepage. Before opening Steam, we need to finish the setup. Open the setup option. Here you\n[1:41] can check whether your device is supported. Then tap install to install the Linux runtime. Before that, you'll also need to allow another permission for notifications. Droid Deck will then\n[1:50] download around 3 GB of data, including the Linux runtime and its required files. Once the Linux runtime is installed, you'll need to enable the",
+      "score": 0.49465415,
+      "raw_content": null,
+      "id": "d6cf6b-04"
+    },
+    {
+      "url": "https://interfacinglinux.com/community/sbcsoftware/native-steam-client-for-arm-linux",
+      "title": "Native Steam Client For ARM Linux – Software",
+      "content": "Native Steam Client For ARM Linux · 1. Download the *.zip · 2. Extract the steamrtarm64 folder to ~/.local/share/Steam/ · 3. Create the file ~/.",
+      "score": 0.48557588,
+      "raw_content": null,
+      "id": "ebc194-05"
+    },
+    {
+      "url": "https://the412banner.github.io/Gamehub-Components/linux-steam-client",
+      "title": "Linux Steam on Android",
+      "content": "Linux Steam / Android\n\nExplainer · September 2026\n\n# Valve's Linux Steam client now runs on an Android phone. No root.\n\nNot Wine pretending to be Steam. Not a streaming app. Valve's own Steam client for ARM Linux — the same build a Steam Deck-class ARM device would run — executing on your phone as ordinary ARM code, signing in, downloading from the store, and launching Windows games through Valve's own Proton.\n\n“Max and I have been working hard on bringing everyone a true Linux Steam client running on Android without root requirements. His work with Gamescope and mine using Wayland has unlocked a powerful future for us all. No longer need to flash or dual-boot ArmadaOS or Rocknix — it comes straight to you via Bannerlator, WinNative, or a standalone app.” [...] | Thing | State | Evidence |\n --- \n| Signing in, the store, installing, launching | Proven | End to end on device; Proton ARM64 fetched by Steam itself |\n| Windows games from the client | Proven | Half-Life 2 79 fps · FlatOut 144 Hz · NFS Most Wanted 48 fps · GTA V Legacy 32 fps · Portal 2 · Brawlhalla · TF2 |\n| Frame generation — LSFG 2× wired into our compositor | Proven | 30 → 61 · 60 → 118 · 61 → 123 fps |\n| Sound, and the microphone | Proven | Voice confirmed in Steam's own voice tester while a game ran |\n| Controllers, and on-screen controls without one | Proven | Re-published as an Xbox 360 pad; Steam shows Xbox glyphs |\n| Other Protons (GE-Proton, proton-cachyos) | Proven | Installed as catalog downloads and selected per game in Bannerlator | [...] Rough cost either way: about 790 MB for the Linux system, once, before any games. The desktop and emulator packages are roughly another 1.1 GB if you want them. You need an ARM64 Android 9+ device with an Adreno GPU — Mali, Xclipse and PowerVR are not supported by this path.\n\n## What actually works today\n\nAn honest ledger, not a feature list. Most of this has been proven on one or two devices.",
+      "score": 0.39992937,
+      "raw_content": null,
+      "id": "93cbf4-06"
+    },
+    {
+      "url": "https://help.steampowered.com/en/wizard/HelpWithGame?appid=943760",
+      "title": "SteamOS Devkit Client",
+      "content": "Log in to your Steam account to get help with your Steam games, contact Steam Support, request refunds, and more. Help is also available if you can't log in",
+      "score": 0.39978877,
+      "raw_content": null,
+      "id": "6edf71-07"
+    }
+  ],
+  "response_time": 3.95,
+  "request_id": "f31de29c-f30a-4771-bf89-2d32580f2ac5"
+}

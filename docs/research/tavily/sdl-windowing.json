@@ -1,0 +1,58 @@
+{
+  "query": "SDL3 GLFW windowing SteamOS Linux games apps X11 wayland",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://discourse.glfw.org/t/glfw-not-showing-window-under-wayland-or-x11-on-nixos/2371",
+      "title": "GLFW not showing window under Wayland or X11 on NixOS - support - GLFW",
+      "content": "OpenGL is only required if you want to use OpenGL (easiest option for graphics), otherwise you can use Vulkan (harder option for graphics as very low level). If you’re calling `glfwMakeContextCurrent` this is for OpenGL.\n\n`glfwMakeContextCurrent`\n\nOn Wayland specifically, you need to swap the buffers of a window for it to become visible.\n\nThis was my issue, thanks.\n\n### Related topics [...] The project built successfully but when I ran the executable it just got stuck there forever (because of the `while` loop) and no window showed up at all. It printed the `window` pointer so I assume it at least successfully initialized.\n\n`while`\n`window`\n\nAfter having no luck under Wayland, I switched to X11 desktop, changed the `glfw-wayland` in `flake.nix` to the statndard `glfw`, and removed the `set(GLFW_USE_WAYLAND ON)` flag. But this time the execution actually errored out with `Could NOT open window!` - it did not even initialize properly. So it’s not working for me under X11 either.\n\n`glfw-wayland`\n`flake.nix`\n`glfw`\n`set(GLFW_USE_WAYLAND ON)`\n`Could NOT open window!`\n\nWhere did I do wrong? Am I missing anything? Please help, thank you so much! [...] My src level `CMakeLists.txt`:\n\n`CMakeLists.txt`\n`find_package(glfw3 REQUIRED)\nadd_executable(App)\ntarget_sources(App PRIVATE main.cpp)\ntarget_link_libraries(App glfw)`\n\nMy `main.cpp`:\n\n`main.cpp`\n`#include <GLFW/glfw3.h>\n#include <iostream>\nint main() {\n// Any call to GLFW must happen between its initialization and termination\nif (!glfwInit()) {\nstd::cerr << \"Could NOT initialize GLFW!\" << std::endl;\nreturn 1;\n}\nGLFWwindow window = glfwCreateWindow(640, 480, \"WebGPU for C++\", NULL, NULL);\nif (!window) {\nstd::cerr << \"Could NOT open window!\" << std::endl;\nglfwTerminate();\nreturn 1;\n}\nstd::cout << \"window:\" << window << std::endl;\nglfwMakeContextCurrent(window);\nwhile (!glfwWindowShouldClose(window)) {\nglfwPollEvents();\n}\nglfwTerminate();\n}`",
+      "score": 0.69746524,
+      "raw_content": null,
+      "id": "ff8d1c-00"
+    },
+    {
+      "url": "https://forum.odin-lang.org/t/sdl3-on-linux-only-working-with-sdl-video-driver-x11/1377",
+      "title": "SDL3 on linux only working with SDL_VIDEO_DRIVER=x11",
+      "content": "When trying to run sdl3 based applications on linux you need to specify SDL_VIDEO_DRIVER=x11 for the application to present a window.",
+      "score": 0.69697046,
+      "raw_content": null,
+      "id": "d1eabe-01"
+    },
+    {
+      "url": "https://github.com/mikeroyal/Steam-Deck-Guide/blob/main/Developers/README.md",
+      "title": "Steam-Deck-Guide/Developers/README.md at main · mikeroyal/Steam-Deck-Guide · GitHub",
+      "content": "GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan application development. It provides a simple, platform-independent API for creating windows, contexts and surfaces, reading input, handling events, etc. GLFW natively supports Windows, macOS and Linux and other Unix-like systems. On Linux both X11 and Wayland are supported.\n\nVulkanSharp is a project provides a .NET binding for the Vulkan API.\n\nVortice.Vulkan is a .NET Standard 2.0 and .NET5 low-level bindings for Vulkan API.\n\nVKD3D-Proton is a fork of VKD3D, which aims to implement the full Direct3D 12 API on top of Vulkan. [...] Qt is the faster, smarter way to create innovative devices, modern UIs & applications for multiple screens. It is one of the most popular toolkits for the Wayland and X11 windowing.\n\nGTK is a free and open source cross-platform widget toolkit for creating graphical user interfaces developed by GNOME Project. It is one of the most popular toolkits for the Wayland and X11 windowing.\n\nNVIDIA Wayland EGL External Platform library is a work-in-progress implementation of a EGL External Platform library to add client-side Wayland support to EGL on top of EGLDevice and EGLStream families of extensions. [...] NVIDIA EGL External Platform Interface is a work-in-progress specification of the EGL External Platform interface for writing EGL platforms and their interactions with modern window systems on top of existing low-level EGL platform implementations. This keeps window system implementation specifics out of EGL drivers by using application-facing EGL functions.\n\nSway is an i3-compatible Wayland compositor.\n\nwlroots is a modular Wayland compositor library.\n\nWayfireWM is a 3D Wayland compositor, inspired by Compiz and based on wlroots.\n\nSDDM is a modern display manager for X11 and Wayland aiming to be fast, simple and beautiful. It uses modern technologies like QtQuick, which in turn gives the designer the ability to create smooth, animated user interfaces.",
+      "score": 0.694241,
+      "raw_content": null,
+      "id": "c5fb8d-02"
+    },
+    {
+      "url": "https://www.phoronix.com/news/SDL-3.0-Wayland-Default-For-Now",
+      "title": "SDL3 Will Keep Wayland Default At Least For The Time ...",
+      "content": "Joshua Ashton of Valve's Linux graphics team sought to revert the Wayland over X11 preference for SDL 3.0 due to some known performance",
+      "score": 0.6685563,
+      "raw_content": null,
+      "id": "2a40f4-03"
+    },
+    {
+      "url": "https://wiki.libsdl.org/SDL3/README-wayland",
+      "title": "SDL3/README-wayland - SDL Wiki",
+      "content": "SDL Wiki\n\n [front page | index | search | recent changes | git repo | offline html ]\n\n# Wayland\n\nWayland is a replacement for the X11 window system protocol and architecture and is favored over X11 by default in SDL3 for communicating with desktop compositors. It works well for the majority of applications, however, applications may encounter limitations or behavior that is different from other windowing systems.\n\n## Common issues:\n\n### Legacy, DPI-unaware applications are blurry [...] Under normal operation, an `SDL_Window` corresponds to an XDG toplevel window, which provides a standard desktop window. If an application wishes to use a different windowing protocol with an SDL window (e.g. wlr\\_layer\\_shell) while still having SDL handle input and rendering, it needs to create a custom, roleless surface and attach that surface to its own toplevel window.\n\nThis is done by using `SDL_CreateWindowWithProperties()` and setting the `SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` property to `true`. Once the window has been successfully created, the `wl_display` and `wl_surface` objects can then be retrieved from the `SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER` and `SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER` properties respectively. [...] qtNative = qtApp.platformNativeInterface(); surface = (struct wl_surface )qtNative->nativeResourceForWindow(\"surface\", &qtWindow); struct \"surface\"  if (!surface) {if goto exit; goto } }  / Create a window that wraps the wl_surface from the QWindow./ Create a window that wraps the wl_surface from the QWindow.  Qt objects should not be flagged as DPI-aware or protocol violations will result.  Qt objects should not be flagged as DPI-aware or protocol violations will result. / / props = SDL_CreateProperties(); SDL_SetPointerProperty(props, SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER, surface); SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN, true); true SDL_SetNumberProperty(props, SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER, 640); 640 SDL_SetNumberProperty(props,",
+      "score": 0.66308063,
+      "raw_content": null,
+      "id": "0abb95-04"
+    },
+    {
+      "url": "https://github.com/glfw/glfw/issues/1655",
+      "title": "Dynamically select between Wayland or X11 backends ...",
+      "content": "While testing the glfw with wayland support enabled at configure/build time, I was hoping that I could switch between X11 or wayland at",
+      "score": 0.6063825,
+      "raw_content": null,
+      "id": "58b017-05"
+    }
+  ],
+  "response_time": 2.09,
+  "request_id": "60969d92-886a-44a1-b1cd-1adaf0bb98c6"
+}

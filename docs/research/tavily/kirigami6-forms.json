@@ -1,0 +1,90 @@
+{
+  "query": "Kirigami 6 FormEntry FormRow FormLayout deprecated removed",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://api.kde.org/legacy/kirigami-addons/html/deprecated.html",
+      "title": "Kirigami-addons - Deprecated List",
+      "content": "## Class Picker. ## Quick Links. Main Page Alphabetical List Class List Class Hierarchy File List Related Pages. ## About Kirigami-addons. Convergent visual components (\"widgets\") for Kirigami-based applications. : IRC: #kde-kirigami on Libera Chat. git clone git@:libraries/kirigami-addons.git. # Kirigami-addons. : due to changes in the Video API this will be removed in KF6. It currently does nothing but is kept to avoid breakage. The loss of this API has been worked around in a way that doesn't break KF5. : Since 1.3.0, use ConfigurationsView instead. : Since 1.3.0, use ConfigurationModule instead. This file is part of the KDE documentation. Documentation copyright © 1996-2025 The KDE developers. Generated on Fri May 2 2025 11:56:59 by doxygen 1.13.2 written by Dimitri van Heesch, © 1997-2006. KDE's Doxygen guidelines are available online.",
+      "score": 0.40882006,
+      "raw_content": null,
+      "id": "1048c6-00"
+    },
+    {
+      "url": "https://api.kde.org/org-kde-kirigami-layouts-qmlmodule.html",
+      "title": "Kirigami Layouts QML Types | Kirigami",
+      "content": "Title: Kirigami Layouts QML Types | Kirigami\n# Kirigami Layouts QML Types. | ColumnView | A container that lays out items horizontally in a row |. | DisplayHint | Hints for implementations using Actions indicating preferences about how to display the action |. | FormData | An attached property with information for decorating a FormLayout |. | FormLayout | Base class for Form layouts conforming to the Kirigami Human Interface Guidelines |. | HeaderFooterLayout | Replicates a little part of what Page does |. | Padding | This item simply adds an external padding to contentItem's size |. | PageStack | This attached property makes possible to access from anywhere the page stack this page was pushed into |. | SizeGroup | Utility object that makes groups of items request the same size |. | ToolBarLayout | An item that creates delegates for actions and lays them out in a row |. A container that lays out items horizontally in a row. Hints for implementations using Actions indicating preferences about how to display the action. An attached property with information for decorating a FormLayout. Base class for Form layouts conforming to the Kirigami Human Interface Guidelines. Replicates a little part of what Page does. This item simply adds an external padding to contentItem's size. This attached property makes possible to access from anywhere the page stack this page was pushed into. Utility object that makes groups of items request the same size. An item that creates delegates for actions and lays them out in a row.",
+      "score": 0.38588423,
+      "raw_content": null,
+      "id": "0303ea-01"
+    },
+    {
+      "url": "https://api.kde.org/qml-org-kde-kirigami-layouts-formlayout.html",
+      "title": "FormLayout QML Type | Kirigami",
+      "content": "Title: FormLayout QML Type | Kirigami\n### Contents. # FormLayout QML Type. The base class for Form layouts conforming to the Kirigami Human Interface Guidelines. | Import Statement: | `import org.kde.kirigami.layouts` |. * List of all members, including inherited members. ## Properties. ## Detailed Description. The layout consists of two columns: the left column contains only right-aligned labels provided by a FormData attached property, the right column contains left-aligned child types. Child types can be sectioned using an QtQuick.Item or Kirigami.Separator with a FormData attached property, see FormLayoutAttached::isSection for details. Kirigami.FormLayoutQQC2.TextFieldKirigami.FormData.label\"Label:\"Kirigami.SeparatorKirigami.FormData.label \"Section Title\"Kirigami.FormData.isSection trueQQC2.TextFieldKirigami.FormData.label\"Label:\"QQC2.TextField. ## Property Documentation. ### twinFormLayouts : list<Item>. If for some implementation reason multiple FormLayouts have to appear on the same page, they can have each other in twinFormLayouts, so they will vertically align with each other perfectly. ### wideMode : bool. This property tells whether the form layout is in wide mode. If true, the layout will be optimized for a wide screen, such as a desktop machine (the labels will be on a left column, the fields on a right column beside it), if false (such as on a phone) everything is laid out in a single column. By default this property automatically adjusts the layout if there is enough screen space. Set this to `true` for a convergent design, set this to `false` for a mobile-only design.",
+      "score": 0.33137986,
+      "raw_content": null,
+      "id": "6346fd-02"
+    },
+    {
+      "url": "https://api.kde.org/qml-org-kde-kirigami-layouts-formdata.html",
+      "title": "FormData QML Type | Kirigami",
+      "content": "Title: FormData QML Type | Kirigami\n### Contents. # FormData QML Type. An attached property with information for decorating a FormLayout. | Import Statement: | `import org.kde.kirigami.layouts` |. * List of all members, including inherited members. ## Attached Properties. ## Detailed Description. It contains the text labels of fields and information about sections. Some of its properties can be used with other Layout types. Kirigami.FormLayout TextFieldKirigami.FormData.label\"User:\" TextFieldKirigami.FormData.label\"Password:\". ## Attached Property Documentation. ### FormData.buddyFor : Item `[attached]`. This property can only be used in conjunction with a FormData::label, often in a layout that is a child of a FormLayout. It then turns the item specified into a \"buddy\" of the label, making it work as if it were a child of the FormLayout. A buddy item is useful for instance when the label has a keyboard accelerator, which when triggered provides active keyboard focus to the buddy item. By default buddy is the item that FormData is attached to. Custom buddy can only be a direct child of that item; nested components are not supported at the moment. ..// If the accelerator is in the letter S,// pressing Alt+S gives focus to the slider...\"Slider label:\"... ### FormData.isSection : bool `[attached]`. If true, the child item of a FormLayout becomes a section separator, and may have different looks:. To make it just a space between two fields, just put an empty item with `FormData.isSection`:. To make it a space with a section title:. To make it a space with a section title and a separator line:. ### FormData.label : string `[attached]`. The label for a FormLayout field. ### FormData.labelAlignment : int `[attached]`. The alignment for the label of a FormLayout field.",
+      "score": 0.20192373,
+      "raw_content": null,
+      "id": "a5bee2-03"
+    },
+    {
+      "url": "https://docs.jmix.io/jmix/flow-ui/vc/layouts/formLayout.html",
+      "title": "formLayout :: Jmix Documentation",
+      "content": "Title: formLayout :: Jmix Documentation\n# formLayout. `formLayout` arranges form fields into responsive columns. The default responsive steps use one column below `40em` and two columns at `40em` or wider:. Set `dataContainer` on `formLayout` to bind its nested fields to the current item of an instance container. ## Auto-Responsive Mode. Set `autoResponsive=\"true\"` to let `formLayout` determine the number of columns from the available width, configured column width, and spacing. If its fields do not fit, they wrap to rows reserved for that `formRow`. |  | When auto-responsive mode is enabled, responsive steps are ignored. The `minColumns`, `maxColumns`, `columnWidth`, `columnSpacing`, `rowSpacing`, `expandColumns`, and `expandFields` attributes refine how the generated grid uses the available space. ## Responsive Steps Mode. Use nested `responsiveStep` elements to specify the column count and label position at different minimum widths. The following attributes are specific to `formLayout`. | autoResponsive | Enables the layout to automatically calculate and adjust the number of columns based on the available width of its container. | columnWidth | Defines the fixed width for all columns. | columnSpacing | Defines the gap between columns using a CSS length. | expandFields | When enabled, fields stretch to fill all available width within their containing column. | labelsAside | Specifies whether `formItem` elements within the layout should position their labels beside the associated fields instead of above them. | labelSpacing | Defines the gap between a side-positioned label and its field using a CSS length, for example, `1em`. | labelsPosition | Sets the label position for the default responsive steps and for nested `responsiveStep` elements that omit `labelsPosition`. - `ASIDE` - labels are positioned to the side of the components. | labelWidth | Sets the width of side-positioned labels using a CSS length, for example, `8em`. | maxColumns | Sets the maximum number of columns the layout can create. | minColumns | Sets the minimum number of columns the layout will create, regardless of container width. | rowSpacing | Defines the gap between rows using a CSS length. | `AttachEvent` | Fires when the layout is attached to the UI. A `formLayout` can contain fields directly or wrap them in `formItem` and `formRow` elements.",
+      "score": 0.11400327,
+      "raw_content": null,
+      "id": "11b6ba-04"
+    },
+    {
+      "url": "https://rocketreach.co/yconic-deprecated-profile_b5cf0535f42e09fe",
+      "title": "yconic (deprecated) Information",
+      "content": "More information [...] Image [...] - [x] checkbox label label\n\n- [x] checkbox label label\n\n- [x] checkbox label label\n\nConfirm My Choices\n\nImage 38: Powered by Onetrust",
+      "score": 0.08914505,
+      "raw_content": null,
+      "id": "575ae3-05"
+    },
+    {
+      "url": "https://rocketreach.co/yconic-deprecated-management_b5cf0535f42e09fe",
+      "title": "yconic (deprecated) Information",
+      "content": "More information [...] Image [...] - [x] checkbox label label\n\n- [x] checkbox label label\n\n- [x] checkbox label label\n\nConfirm My Choices\n\nImage 38: Powered by Onetrust",
+      "score": 0.08914505,
+      "raw_content": null,
+      "id": "b8d48a-06"
+    },
+    {
+      "url": "https://find-and-update.company-information.service.gov.uk/company/16088864",
+      "title": "KIRIGAMI RESEARCH LTD overview - Find and update company information - GOV.UK",
+      "content": "70229 - Management consultancy activities other than financial management\n\nTell us what you think of this service(link opens a new window) Is there anything wrong with this page?(link opens a new window) [...] ## Cookies on Companies House services\n\nWe use some essential cookies to make our services work.\n\nWe'd also like to use analytics cookies so we can understand how you use our services and to make improvements.\n\nView cookies\n\nYou've accepted analytics cookies. You can change your cookie settings at any time.\n\nYou've rejected analytics cookies. You can change your cookie settings at any time.\n\nFind and update company information [...] Registered office address\n:   128 City Road, London, United Kingdom, EC1V 2NX\n\nCompany status\n:   Active\n\nCompany type\n:   Private limited Company\n\nIncorporated on\n:   19 November 2024\n\n## Accounts\n\nNext accounts made up to 31 December 2026   \n due by 30 September 2027\n\nLast accounts made up to 31 December 2025\n\n## Confirmation statement\n\nNext statement date 18 November 2026   \n due by 2 December 2026\n\nLast statement dated 18 November 2025\n\n## Nature of business (SIC)",
+      "score": 0.0713904,
+      "raw_content": null,
+      "id": "1ce7fd-07"
+    },
+    {
+      "url": "https://cryptorank.io/news/feed/446cd-magic-eden-wallet-deprecated-only-allows-exports-from-april-1",
+      "title": "Magic Eden wallet deprecated, only allows exports from April 1 | CryptoRank.io",
+      "content": "Tokenized stocks, ETFs, bonds and commoditiesHeatmaps\n\nCryptocurrency market state visualizationPrediction Markets\n\nAll-in-one analytics for prediction marketsAlerts\n\nCryptocurrency signals and price alertsDrop Hunting\n\nPotential airdrops and activitiesWidgets\n\nUseful widgets for your siteConverter\n\nCryptocurrency converterMarket Data API\n\nCheck out the details of our API plans\n\nWatchlistPortfolio\n\n/\n\n/\n\n# Magic Eden wallet deprecated, only allows exports from April 1\n\nMar 31, 2026\n\n2min read [...] 2min read\n\nbyHristina Vasileva\n\nforCryptoPolitan\n\nMagic Eden wallet deprecated, only allows exports from April 1\n\nShare:\n\nAI Overview [...] Bearish\n\nPredictions Markets\n\nSee what traders are focused on\n\nView analytics →\n\nPrediction Banner\n\nMagic Eden wallet will be deprecated, announced the former NFT marketplace. The wallet will only allow exports from April 1 to allow users to move their private keys or seed phrases.\n\nThe Magic Eden wallet will be removed from all app stores and will enter export-only mode, not allowing new transactions or other activities.",
+      "score": 0.029426433,
+      "raw_content": null,
+      "id": "1b26d6-08"
+    },
+    {
+      "url": "https://coinmarketcap.com/currencies/deprecated-polkadot-old",
+      "title": "[deprecated] Polkadot price today, DEPRECATEDDOTDOT to USD live price, marketcap and chart | CoinMarketCap",
+      "content": "Always Active\n\nThese cookies are necessary for the website to function and cannot be switched off in our systems. They are usually only set in response to actions made by you which amount to a request for services, such as setting your privacy preferences, logging in or filling in forms. You can set your browser to block or alert you about these cookies, but some parts of the site will not then work. These cookies do not store any personally identifiable information. [...] It’s a rare example of a nation maintaining a trackable Bitcoin treasury, allowing anyone to monitor the holdings and movements.\n\n...Read all\n\nImage 96: image\n\nImage 97: BTC logoBTC 1.82%\n\n54 6 6 5 4 1\n\n44.4K\n\n1\n\n1\n\n76\n\nImage 98\n\nGuest\n\n$DEPRECATEDDOTDOT How do you feel today?\n\nBullish Bearish\n\nLog in and post\n\nPost\n\n##### All Project Posts\n\n   ##### Posts\n##### Posts  \n   ##### Articles\n##### Articles  \n\n### Popular Real World Assets\n\nImage 99: Gold Gold GOLD $4,134.66 0.21% [...] Now there's someone who doesn't pray. AI bots. Companies let them move spare crypto into savings day and night, no coffee breaks ☕\n\n  \n\nThe bot does exactly what you wrote. Write \"put spare Image 84: BTC logo$BTC crypto into savings,\" and it keeps doing that even when one coin pumps and takes over the whole pile. No questions asked 🤖\n\n  \n\nI wrote about the one word that makes this happen, and the easy fix 👇 Full breakdown: medium.com/@vlad.anderson/what...",
+      "score": 0.027988976,
+      "raw_content": null,
+      "id": "9f05fa-09"
+    }
+  ],
+  "response_time": 3.36,
+  "request_id": "e96ebfe0-fca6-41fd-9e79-0bf1d691d7ae"
+}

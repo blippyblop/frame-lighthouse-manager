@@ -1,0 +1,90 @@
+{
+  "query": "Kirigami 6.14 API documentation developer.kde.org",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://kde.org/products/kirigami",
+      "title": "Kirigami UI Framework | Developer",
+      "content": "Kirigami is developed by the KDE community. We have been around since 1997, and we develop high quality open source software used by millions of people worldwide. Kirigami is released under LGPL-2.0-or-later, and, as such, can be used in your open source or commercial project. [...] Kirigami integrates effortlessly with C++, Rust, and Python, giving developers the freedom to use the language they love while benefiting from KDE’s robust ecosystem and proven cross-platform technologies.\n\nGet Started!\n\n## Open and trusted [...] Kirigami is one of the 80 KDE Frameworks produced by KDE, part of a collection of high quality add-on libraries for Qt apps with long ABI and API stability guarantees. And, in case you need support, there is a network of trusted consultants available to assist you with your project.\n\nscreenshot of the app NeoChat",
+      "score": 0.65940565,
+      "raw_content": null,
+      "id": "2db1e2-00"
+    },
+    {
+      "url": "https://develop.kde.org/docs/plasma/scripting/api",
+      "title": "API documentation | Developer",
+      "content": "Global properties:\n\n `array knownWidgetTypes`: this lists all plasmoid types including Containment types like `org.kde.panel` and `org.kde.desktopcontainment`.\n\n### Widget Object API\n\nWidgets also inherit all the Applet properties.\n\nRead-only properties: [...] let activityId = createActivity(\"Activity Name\") let activityId = createActivity(\"Activity Name\") let activityId = createActivity(\"Activity Name\")let activityDesktops = desktopsForActivity(activityId) let activityDesktops = desktopsForActivity(activityId) let activityDesktops = desktopsForActivity(activityId)let desktop = activityDesktops let desktop = activityDesktops let desktop = activityDesktopsdesktop.wallpaperPlugin = \"org.kde.image\" desktop.wallpaperPlugin = \"org.kde.image\" desktop. [...] let desktop = desktops() let desktop = desktops() let desktop = desktops()desktop.wallpaperPlugin = \"org.kde.image\" desktop.wallpaperPlugin = \"org.kde.image\" desktop. wallpaperPlugin =\"org.kde.image\"desktop.currentConfigGroup = Array(\"Wallpaper\", \"org.kde.image\", \"General\") desktop.currentConfigGroup = Array(\"Wallpaper\", \"org.kde.image\", \"General\") desktop. currentConfigGroup = Array(\"Wallpaper\",\"org.kde.image\", \"General\")desktop.writeConfig(\"Image\",",
+      "score": 0.5911811,
+      "raw_content": null,
+      "id": "727539-01"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=bVmjBztkS-8",
+      "title": "KDE Kirigami development in depth tutorial - March 2026 - 4b81e0b0",
+      "content": "[1:09:33] extremely fresh. Let's see if uh this is fresh with the web page was generated in the last weeks. So we're looking for application window.\n[1:09:45] Where is it? It's in here.\n[1:09:52] says module or.k.kuryami and then a window that provides some basic features needed for all apps.\n[1:10:09] Okay, it's usually used as a root QML component for the application with the example.\n[1:10:21] Yeah. So this is the way um API documentation [...] [1:40:42] things that are extra on top of the inherited properties, values,\n[1:40:50] methods, events, whatever, etc. that already exist in the type that it inherits from.\n[1:40:59] When looking through QML API documentation, make sure to look into the functions and properties inherited by the API you are looking at as well.\n[1:41:09] So whenever you're looking at page from Kirigyami also look at page from QQC2.\n[1:41:28] Okay. [...] [1:40:01] So this part is important that Kyami page inherits from controls page. So it is a controls page. So this is from the\n[1:40:09] cute framework. This is from the KD community. So if you want to see the entire API area of a type from uh Kyami\n[1:40:18] in this case for page, you first need to actually know the entire API area of uh\n[1:40:26] controls.page from the cute um framework. So this one cutequick controls\n[1:40:34] page of course kygami.page only defines the",
+      "score": 0.5769478,
+      "raw_content": null,
+      "id": "2af2af-02"
+    },
+    {
+      "url": "https://develop.kde.org/docs/getting-started/kirigami",
+      "title": "Getting started with Kirigami | Developer",
+      "content": "Make your apps more interactive by using buttons, selection controls, sliders, and text fields.\n\n## Form layouts\n\nEasily create attractive interaction areas with Kirigami FormLayouts\n\n## Inline messages\n\nDisplay messages related to the content in your application\n\n## Action toolbars\n\nCreate your own customisable tool bars with the ActionToolBar component\n\n## Progress bars and indicators\n\nProvide your users with loading state information using progress bars.\n\n## List views [...] ## Cards\n\nA card serves as an overview and entry point for more detailed information and can offer direct access to the most important actions of an item.\n\n## Drawers\n\nDrawers provide applications with quick access to controls and pages of your application.\n\n## Chips\n\nChips are small elements typically used to list out related properties.\n\n## Dialog types\n\nVarious ways to serve and input data.\n\n## Controls and interactive elements [...] Kirigami is built on top of the QML language and Qt Quick Controls 2 components provided by the Qt project. QML has built-in support for touch systems, which makes it ideal for mobile apps. Qt Quick components are reusable visual items we can use when building our applications’ interfaces. Kirigami is a set of Qt Quick components designed for creating convergent applications.",
+      "score": 0.54855317,
+      "raw_content": null,
+      "id": "0c4fe0-03"
+    },
+    {
+      "url": "https://discuss.kde.org/t/kirigami2-for-developement-on-windows-rant/6333",
+      "title": "Kirigami2 for developement on Windows [Rant] - Development - KDE Discuss",
+      "content": "From my own experiences with creating a Kirigami app that also works on Windows: The docs aren’t great, the result isn’t perfect but it is absolutely serviceable. I don’t know when or where I found craft, but I know I found it pretty much immediately so I didn’t have to spend time for nothing trying to build the dependencies manually and I don’t know why or how the default app looks this broken for you. There’s definitely some parts where Kirigami apps look kinda weird on Windows, but I’d say [...] Now i found this (\\ a kde frameworks overview, that talks about kirigami2 being functional on windows. But when i was reading through the getting started (\\ documentation of kirigami, i was a little surprised to find info exclusively about linux distros. [...] KDE (or Qt generic) tutorials and obviously it would be great if the result would be 100% in line with how it looks on Linux, but all things considered Kirigami is still a fairly small framework by the looks of it, so I expect things to not be perfect.",
+      "score": 0.39229083,
+      "raw_content": null,
+      "id": "c6b12e-04"
+    },
+    {
+      "url": "https://developers.mattermost.com/api-documentation",
+      "title": "API Documentation",
+      "content": "Use Cases\n\n  + Purpose-Built Collaboration Hub\n  + Self-Sovereign Collaboration\n  + Mission-Critical ChatOps\n  + Real-Time DevSecOps Collaboration\n  + Integrated Security Operations\n  + Out-of-Band Incident Response\n\n  Industries\n\n  + Critical Infrastructure\n  + Defense\n  + Technology\n  + Global Public Sector\n  + Financial Services\n  + Energy and Utilities\n  + Manufacturing\n Customers;)\n\n  Customers\n\n  +  USAF\n  +  Fujitsu\n  +  RTE\n  +  CERN [...] Login\n\n  + My Workspace\n  + Admin Portal\n  + Apps\n  + Support\n Contact Sales\n\n Contribute\n Integrate & Extend\n API Documentation\n\nEdit on GitHub!\n\nDid you find what you were looking for?\n\n😀\n\nYes;)  😐\n\nMostly;)  🙁\n\nNo!;)\n\nThank you! We appreciate your feedback.\n\n## Tell us more\n\nYour feedback helps us improve the Mattermost developer documentation.\n\n0/186\n\nHave a feature request?  Share it here.\n\nHaving issues?  Join our Community server. [...] +  NRI\n  +  Pramacom\n  +  Crossover Health\n  +  Netfoundry\n\n  See more customer stories »\n Pricing\n Partners;)\n\n  Partners\n\n  + Become a Partner\n  + Partner Program\n  + Deal Registration\n Resources;)\n\n  Resources\n\n  + Resource Library\n  + Blog\n  + Demos\n  + Events\n\n  Documentation\n\n  + Academy\n  + Channels Guide\n  + Playbooks Guide\n  + Admin\n  + Docs\n  + API Reference\n  + Release Notes\n\n  Community\n\n  + Join Community\n  + Contribute\n  + Deploy\n  + Integrate\n  + Download\n Login;)\n\n  Login",
+      "score": 0.07015732,
+      "raw_content": null,
+      "id": "a2d355-05"
+    },
+    {
+      "url": "https://coinmarketcap.com/api/documentation/pro-api-reference/cmc-index",
+      "title": "CoinMarketCap API Documentation",
+      "content": "\"timestamp\": \"2024-08-25T15:00:00Z\",\n    \"total_count\": 0\n  }\n}\n``` [...] Others\n\nDEX Data\n\nToken\n\nPlatform\n\nHolder\n\nOHLCV\n\nUtilities\n\nFiat ID Map getKey Info getPostman Conversion v1 getPrice Conversion v2 get\n\nLegacy\n\nMenu\n\nCoinMarketCap Cryptocurrency API Documentation\n\nCoinMarketCap Cryptocurrency API Documentation\n\n# CMC Index\n\n##### CoinMarketCap market indices. This category includes 4 endpoints: [...] json\n\napplication/json\n\n  \n\nCommunityCrypto Others\n\nIf you are an AI agent, LLM, or automated tool, this documentation provides clean Markdown versions of pages. Use the HTTP Link header for the exact Markdown alternate, append .md to documentation page URLs, or start from \n\n© 2026 CoinMarketCap. All rights reserved.\n\nImage 3: xImage 4: github",
+      "score": 0.029627915,
+      "raw_content": null,
+      "id": "b7e37c-06"
+    },
+    {
+      "url": "https://coinmarketcap.com/api/documentation/pro-api-reference/platform",
+      "title": "CoinMarketCap API Documentation",
+      "content": "OHLCV\n\nUtilities\n\nFiat ID Map getKey Info getPostman Conversion v1 getPrice Conversion v2 get\n\nLegacy\n\nMenu\n\nCoinMarketCap Cryptocurrency API Documentation\n\nCoinMarketCap Cryptocurrency API Documentation\n\n# Platform\n\n##### DEX platform and network information. This category includes 2 endpoints:\n\n   /v1/dex/platform/list - Get Platform List\n   /v1/dex/platform/detail - Get Platform Detail\n\n  \n\n## Get platform list\n\nGet list of all supported platforms\n\nAvailable with no API key [...] Example Responses\n\n```\n[\n  {\n    \"id\": 14,\n    \"n\": \"Ethereum\",\n    \"i\": \"\n    \"uf\": \"\n    \"dn\": \"12\",\n    \"txuf\": \"\n    \"v\": true,\n    \"p\": false,\n    \"addrUrl\": \"\n    \"chId\": 1,\n    \"puf\": \"\n    \"wcId\": 2001,\n    \"hl\": 1,\n    \"ho\": 3,\n    \"pltA\": \"ETH\",\n    \"cid\": 0\n  }\n]\n```\n\njson\n\napplication/json\n\n  \n\n## Get platform detail\n\nGet detailed information for a specific platform\n\nAvailable with no API key [...] Call this endpoint keyless - no API key, no signup. Prefix the path with `/public-api`: ` See the Keyless Public API for the full list, rate limits, and examples.\n\n### Get platform detail › query Parameters\n\n`dn`\n\n​string\n\nNumber of supported DEXs on this platform\n\n`txuf`\n\n​string\n\nURL format for viewing transactions\n\n`v`\n\n​boolean\n\nWhether the platform is visible in the UI\n\n`p`\n\n​boolean\n\nWhether the platform is pinned (e.g., prioritized display)\n\n`addrUrl`\n\n​string",
+      "score": 0.027358351,
+      "raw_content": null,
+      "id": "bf9205-07"
+    },
+    {
+      "url": "https://coinmarketcap.com/api/documentation/pro-api-reference/community",
+      "title": "CoinMarketCap API Documentation",
+      "content": "Example Responses\n\n```\n{\n  \"data\": {\n    \"rank\": 1,\n    \"topic\": \"Tether\"\n  },\n  \"status\": {\n    \"timestamp\": \"2022-09-08T16:08:52.641Z\",\n    \"error_code\": \"0\",\n    \"error_message\": \"SUCCESS\",\n    \"elapsed\": \"0\",\n    \"credit_count\": 0\n  }\n}\n```\n\njson\n\napplication/json\n\n  \n\nContentCMC Index [...] Market Data\n\nCryptocurrency\n\nExchange\n\nReal World Assets\n\nDerivatives\n\nCMC AI\n\nGlobal Metrics\n\nContent\n\nCommunity\n\n    Community Trending Tokens get\n    Community Trending Topics get\n\nCMC Index\n\nOthers\n\nDEX Data\n\nToken\n\nPlatform\n\nHolder\n\nOHLCV\n\nUtilities\n\nFiat ID Map getKey Info getPostman Conversion v1 getPrice Conversion v2 get\n\nLegacy\n\nMenu\n\nCoinMarketCap Cryptocurrency API Documentation\n\nCoinMarketCap Cryptocurrency API Documentation\n\n# Community [...] Image 1: CoinMarketCapImage 2: CoinMarketCap\n\nSearch\n\nPricingAPI StatusGet API Key\n\n   Overview\n   API Reference\n   WebSocket\n   AI Agent Hub\n   Changelog\n   FAQ\n\nIf you are an AI agent, LLM, or automated tool, this documentation provides clean Markdown versions of pages. Use the HTTP Link header for the exact Markdown alternate, append .md to documentation page URLs, or start from \n\n© 2026 CoinMarketCap. All rights reserved.\n\nImage 3: xImage 4: github\n\nChoose an Endpoint\n\nMarket Data",
+      "score": 0.026377967,
+      "raw_content": null,
+      "id": "a06117-08"
+    },
+    {
+      "url": "https://coinmarketcap.com/api/documentation/v1?ref=defiplot.com",
+      "title": "CoinMarketCap API Documentation",
+      "content": "Title: CoinMarketCap API Documentation\nImage 1: CoinMarketCapImage 2: CoinMarketCap. If you are an AI agent, LLM, or automated tool, this documentation provides clean Markdown versions of pages. Use the HTTP Link header for the exact Markdown alternate, append .md to documentation page URLs, or start from https://pro.coinmarketcap.com/llms.txt. The CoinMarketCap API is built for teams that want the **most trusted** and **comprehensive** cryptocurrency market data in the industry. As the industry authority and the world’s number one cryptocurrency market data API, it gives developers access to real-time and historical market data, exchange data, global metrics, and DEX data through a single REST API. Trusted by everyone from individual developers to major finance and crypto institutions, the API combines broad coverage with production-ready scale: **14 years** of historical data, **51M+** tracked assets, **947+** exchanges, **72+** endpoints, and more than **1 billion** API calls per month. Whether you are building a wallet, exchange, portfolio tracker, analytics platform, trading system, AI product, or research workflow, CoinMarketCap provides the depth and reliability needed to power serious crypto applications. The platform is designed to scale with your product, from free experimentation to enterprise deployment. *   Add DEX token, pair, and on-chain market data to your product. When you're ready for higher rate limits and the full catalog, follow Get Started with an API Key to get a key and make your first authenticated request. Keyless Public API Call the API with no key and no signup - try it before you set anything up.Get Started with an API Key Get a key and make your first authenticated request, then find what to do next.Common workflows Start from the task you want to accomplish, not just the category tree.Choose an endpoint Find the right API family for prices, history, exchange data, DEX data, and more.Response format and IDs Understand response structure, stable IDs, timestamps, and how to bundle requests.Rate limits and troubleshooting See the main error types, rate limit behavior, and practical troubleshooting guidance.Best practices Learn the patterns that scale well for production integrations. IDE integrations Set up CMC MCP in Cursor, Claude Code, or Windsurf.Skills for AI Agents Pre-built workflows for market analysis and token research.x402 Protocol Pay $0.01 USDC per request — no API key needed.",
+      "score": 0.023368675,
+      "raw_content": null,
+      "id": "dc7e31-09"
+    }
+  ],
+  "response_time": 1.41,
+  "request_id": "f7a8e06c-a5b9-4290-8aea-6c7d52b7e3de"
+}

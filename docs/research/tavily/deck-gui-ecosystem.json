@@ -1,0 +1,74 @@
+{
+  "query": "Steam Deck popular apps GUI framework Qt KDE Tauri Electron Decky",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://www.bgr.com/2057391/essential-steam-deck-apps-you-should-use-2025",
+      "title": "5 Essential Steam Deck Apps You Should Be Using In 2026",
+      "content": "Now that you have a launcher set up to easily launch all of your games, you're going to want to install Decky Loader to gain access to a wide world of Steam Deck plugins. Accessible from a single button press, Decky Loader is basically a Swiss Army Knife for the Steam Deck. Plugins range from customizing with new visuals and sounds, to tweaking your games' performance on a per-game basis, even including games you emulate with apps like EmuDeck (more on that later). [...] By using ProtonUp-Qt, you can ensure you have Proton-GE installed for your Steam Deck games to access, and you can even choose what versions, should you need an older variant to get a game working. Once you've installed your Proton-GE version of choice, you'll be able to select that Proton version just as you would with the defaults already available on Steam.\n\nProtonUp-Qt is one of the easiest ways to extend game compatibility on the Steam Deck, and since it's available on the Linux app store Flathub as a Flatpak, it's also easy to install. Steam OS supports Flatpaks from Flathub out of the box within the default Discover Software Center. Simply boot into the Desktop Mode, open Discover, and search for ProtonUp-Qt to install it. Easy-peasy, just as handheld gaming was meant to be. [...] ## ProtonUp-Qt\n\nOne of the great things about Steam OS and the Steam Deck is that you can easily change your Proton versions on a per-game basis. You may want to do this to find a Proton version that performs better in a game than the default option. The thing is, despite how many versions of Proton are out there, you are limited to a handful on the default Steam Deck setup. This is where ProtonUp-Qt comes into the picture: This tool makes it easy to install Proton-GE, a community-made fork that offers extra patches for extended compatibility, thanks to its friendly graphical user interface.",
+      "score": 0.48850358,
+      "raw_content": null,
+      "id": "6367b1-00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=Man1SIvmLC4",
+      "title": "My FAVOURITE Steam Deck Apps & Plugins!",
+      "content": "There are plenty of apps and plugins to improve your Steam Deck experience, let's talk about some of my favourites!",
+      "score": 0.42062396,
+      "raw_content": null,
+      "id": "4360da-01"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=CEXex3xdKro&xstg=CAMSBhUDzO3xHw%3D%3D",
+      "title": "I built a REAL Desktop App with both Tauri and Electron",
+      "content": "### Transcript\n[0:00] Electron is still the most popular framework for building desktop applications, but a lot of people really hate Electron apps, and there are some really good reasons for that.\n[0:08] It uses a lot of resources and the app sizes are huge.\n[0:11] What makes Electron apps so popular though is the fact that you can simply use web technologies to build one desktop app and use it on every major platform.\n[0:19] But while Electron has been mostly uncontested in recent years, An alternative promises to solve at least some of those problems.\n[0:26] Tauri is a somewhat new framework for building desktop applications with web technologies. It promises to be small, fast and secure. [...] [1:46] With Electron on the other hand, the story is a little bit more difficult. There's no framework integration out of the box.\n[1:52] So you can either use the first party tool Electron Forge, or a community boilerplate like Electron Vite.\n[1:57] I went with Electron Vite, which proved to be a good decision, as Electron Forge recently marked their Vite support retroactively as experimental, which I have honestly never heard before.\n[2:08] Tauri clearly has the second mover advantage here, and was way easier to setup than Electron.\n[2:12] One of the first features that our desktop app needs is a way to log into an existing SolidTime account. [...] # I built a REAL Desktop App with both Tauri and Electron\n## Channel: Bufferhead\n9.47K subscribers\n8.4K likes\n\n### Description\n357,017 views\nPosted: 2024-12-04\nElectron is the most popular framework for building desktop applications with web technologies, but Tauri promises to solve some of Electrons biggest problems. To find out how good Tauri really is in comparison, I wrote my latest app in both Tauri and Electron. \n\nSolidtime - The Modern Open Source Time Tracker: \nSolidtime Github Repository: \nSolidtime Desktop App:",
+      "score": 0.39641917,
+      "raw_content": null,
+      "id": "00b0b4-02"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=CEXex3xdKro",
+      "title": "I built a REAL Desktop App with both Tauri and Electron",
+      "content": "### Transcript\n[0:00] Electron is still the most popular framework for building desktop applications, but a lot of people really hate Electron apps, and there are some really good reasons for that.\n[0:08] It uses a lot of resources and the app sizes are huge.\n[0:11] What makes Electron apps so popular though is the fact that you can simply use web technologies to build one desktop app and use it on every major platform.\n[0:19] But while Electron has been mostly uncontested in recent years, An alternative promises to solve at least some of those problems.\n[0:26] Tauri is a somewhat new framework for building desktop applications with web technologies. It promises to be small, fast and secure. [...] [1:46] With Electron on the other hand, the story is a little bit more difficult. There's no framework integration out of the box.\n[1:52] So you can either use the first party tool Electron Forge, or a community boilerplate like Electron Vite.\n[1:57] I went with Electron Vite, which proved to be a good decision, as Electron Forge recently marked their Vite support retroactively as experimental, which I have honestly never heard before.\n[2:08] Tauri clearly has the second mover advantage here, and was way easier to setup than Electron.\n[2:12] One of the first features that our desktop app needs is a way to log into an existing SolidTime account. [...] # I built a REAL Desktop App with both Tauri and Electron\n## Channel: Bufferhead\n9.46K subscribers\n8.4K likes\n\n### Description\n353,561 views\nPosted: 2024-12-04\nElectron is the most popular framework for building desktop applications with web technologies, but Tauri promises to solve some of Electrons biggest problems. To find out how good Tauri really is in comparison, I wrote my latest app in both Tauri and Electron. \n\nSolidtime - The Modern Open Source Time Tracker: \nSolidtime Github Repository: \nSolidtime Desktop App:",
+      "score": 0.39641917,
+      "raw_content": null,
+      "id": "afb787-03"
+    },
+    {
+      "url": "https://steamcommunity.com/app/1675200/discussions/0/4039230033356451198",
+      "title": "Which Qt version best to use for an app for the deck?",
+      "content": "I am planning to use Qt & C++, any thoughts on which version of Qt is best for the steam deck? Will Qt 6.6.1 work fine? Are there any",
+      "score": 0.37202653,
+      "raw_content": null,
+      "id": "4032bd-04"
+    },
+    {
+      "url": "https://steamcommunity.com/app/1675200/discussions/0/4039230033356451198?l=malay",
+      "title": "Which Qt version best to use for an app for the deck?",
+      "content": "I am planning to use Qt & C++, any thoughts on which version of Qt is best for the steam deck? ... Since you are learning, I would lean on working with Qt 6",
+      "score": 0.3643935,
+      "raw_content": null,
+      "id": "3e304c-05"
+    },
+    {
+      "url": "https://medium.com/@maxel333/comparing-desktop-application-development-frameworks-electron-flutter-tauri-react-native-and-fd2712765377",
+      "title": "Comparing Desktop Application Development Frameworks: Electron, Flutter, Tauri, React Native, and…",
+      "content": "Sitemap\n\nOpen in app\n\nSign up\n\nSign in\n\n, communication tools (Slack), and entertainment apps (Spotify).\n   Flutter: Emerging as a choice for media-rich applications, Flutter has been used for apps like Google Ads, Alibaba, and Reflectly.\n   Tauri: Tauri is gaining traction for lightweight, secure applications, including password managers (LosePass) and communication tools (Mailspring).\n   React Native: Although primarily a mobile framework, React Native has been extended for desktop use in apps like Discord and Microsoft Teams.\n   Qt: Qt is a versatile choice used in a wide range of applications, from industrial software to gaming and automotive infotainment systems.\n\n## Development Challenges [...] If you’re looking for a framework that allows you to leverage web technologies, Electron and React Native are strong choices. Electron has a large community and a wide range of pre-built components, while React Native offers a robust component system and allows for code reuse between mobile and desktop platforms.\n   If performance and small bundle sizes are a priority, consider Flutter or Tauri. Flutter provides fast startup times and smooth animations, while Tauri is known for its lightweight nature and low resource consumption.\n   If you need a framework with excellent native integration and a native look and feel, Qt is a reliable option. [...] ## Development Challenges\n\nWhile each framework has its strengths, it’s essential to be aware of potential challenges and limitations:\n\n   Electron: Electron apps can be resource-intensive, potentially leading to performance issues on older hardware.\n   Flutter: Developing for desktop with Flutter may involve a learning curve if you’re primarily a mobile developer.\n   Tauri: As a relatively new framework, Tauri may have a smaller community and fewer third-party libraries compared to more established options.\n   React Native: Transitioning React Native to desktop may require additional effort, and some platform-specific features may be harder to access\n   Qt: Qt’s learning curve, particularly for developers new to C++, may be a challenge.\n\n## Conclusion",
+      "score": 0.35133386,
+      "raw_content": null,
+      "id": "3a62d5-06"
+    },
+    {
+      "url": "https://www.reddit.com/r/IndieDev/comments/1uztqcu/swapped_out_tauri_for_electron_to_get_decent",
+      "title": "Swapped out Tauri for Electron to get decent Steam Deck ...",
+      "content": "Performance and audio dropouts improved immediately. One of the biggest frustrations I found bundling Electron-based games for Steam is that the",
+      "score": 0.35019964,
+      "raw_content": null,
+      "id": "137339-07"
+    }
+  ],
+  "response_time": 3.58,
+  "request_id": "8e730d0e-0c95-4d64-971c-f9fe19d11da6"
+}

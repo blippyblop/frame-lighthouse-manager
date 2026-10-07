@@ -7,6 +7,9 @@ Bluetooth Low Energy, and organizes them into named groups and nicknames.
 Lighthouses normally sleep while the SteamVR runtime is running; this app is
 the companion for switching them back on without opening Steam.
 
+The BLE stack talks to BlueZ over D-Bus directly (org.bluez Device1/GATT,
+via Qt6::DBus) — QtBluetooth is not shipped on the SteamOS Frame.
+
 - [Screens & features](docs/SCREENS.md)
 - [BLE protocol](docs/PROTOCOL.md)
 
@@ -29,7 +32,19 @@ BLE, run the installed wrapper directly:
 ~/.local/share/flatpak/app/com.blippyblop.LighthousePM/active/1.0.0/files/lighthouse-pm.sh
 ```
 
-## Building (cross, x86_64 → aarch64)
+## Building for the Frame (cross, x86_64 → aarch64, firmware sysroot)
+
+```sh
+sh build-frame.sh
+```
+
+Uses the Frame's own gcc 15.1.1/binutils/glibc/Qt (build_env/frame-sysroot,
+qemu-emulated) so the binary matches the firmware ABI; ends with a qemu
+smoke test. Build host needs a native cmake + ninja + gettext — this
+workspace ships them under /workspace/tools/bin (wrappers for the
+firmware toolchain are in there too).
+
+## Building for generic aarch64 KDE (Alpine/musl)
 
 The release pipeline builds for aarch64 Linux (Alpine/KDE, musl). Manual
 cross-build from an x86_64 Alpine host:

@@ -1,0 +1,74 @@
+{
+  "query": "Steam Deck developer guide SteamOS app development flatpak",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://forum.level1techs.com/t/steam-deck-with-steamos3-development-environment/187539",
+      "title": "Steam Deck with SteamOS3 - development environment",
+      "content": "For multimedia, general office work and the like, most of the needs are already covered with the available Flatpaks. One instance where things",
+      "score": 0.7265231,
+      "raw_content": null,
+      "id": "0c258a-00"
+    },
+    {
+      "url": "https://github.com/mikeroyal/Steam-Deck-Guide/blob/main/Developers/README.md",
+      "title": "Steam-Deck-Guide/Developers/README.md at main · mikeroyal/Steam-Deck-Guide · GitHub",
+      "content": "ReplaySorcery is an open-source, instant-replay solution for Linux.\n\nLuxtorpeda is a Steam Play compatibility tool to run games using native Linux engines.\n\nSteamGridDB is a huge database where you can download and share custom video game assets and personalize your gaming library.\n\nSGDBoop is a tool that automatically applies assets from SteamGridDB directly to your Steam library with a click of a button, removing the need to download and set them manually. Available as a Flatpak\n\nDeck Verified is a program that reviews games in Steam's catalog verifying their compatibility with the Steam Deck. So when you visit your Library on Steam Deck, you’ll find a compatibility badge on each title, reflecting the kind of experience you can expect when playing each game on Steam Deck. [...] SteamOS VSCode + Docker guide by khvn26\n\nSteam Deck Developer Forums\n\nSteamworks is a free suite of tools available to any developer to use in their game or software on Steam and the Steam Deck.\n\nSteam Hardware GitLab Repo is a repository that contains CAD files for the external shell (surface topology) of Steam Deck, under a Creative Commons license. This includes an STP model, STL model, and drawings (DWG) for reference.\n\nDynamic Cloud Sync is a tool that Steam will use to automatically upload all modified save game data to the cloud prior to the device entering sleep mode. Users can then resume their game on any PC, laptop or other device. Steam will also automatically download any save game changes when users return to their Steam Deck and wake up the device. [...] ## Navigation Menu\n\n## FilesExpand file tree\n\n## Breadcrumbs\n\n# README.md\n\n## Latest commit\n\n## History\n\n## Breadcrumbs\n\n# README.md\n\n## File metadata and controls\n\n# Developers\n\nBack to Home\n\nDISCLAMER!!! This section is designed to provide information for experienced developers! If you are just looking to play games or customize your deck, we recommend returning ot the main page and ignoring this section!\n\n## Table of Contents\n\n## Engines\n\n## Steam Deck Development\n\nBack to the Top\n\n### Quick Links to Development Resources\n\nBack to the Top\n\nGetting your game ready for Steam Deck\n\nDeveloping for Steam Deck without a Dev-Kit\n\nSteam Deck Developer Kits\n\nSteamOS Devkit Service on GitLab\n\nSteamOS Devkit Client on GitLab\n\nSteam Deck and Proton\n\nSteamOS VSCode + Docker guide by khvn26",
+      "score": 0.71185225,
+      "raw_content": null,
+      "id": "af7cd3-01"
+    },
+    {
+      "url": "https://www.gamingonlinux.com/guides/view/how-to-install-extra-software-apps-and-games-on-steamos-and-steam-deck",
+      "title": "How to install extra software, apps and games on SteamOS and Steam Deck | GamingOnLinux",
+      "content": "Unlike traditional Linux distributions (like Ubuntu) you don't install packages system-wide, as the operating system files are locked and replaced on system updates.\n\nInstead, SteamOS out of the box supports something called Flatpak. It's a type of Linux packaging that's supported across many different Linux distributions. For SteamOS, it uses Flathub by default as the list of supported packages. So if you search on Flathub, and it's available, you'll be able to install it! This is useful to know because it means when away from your SteamOS system, you can visit Flathub directly and search any time.\n\nFor any time you need an on-screen keyboard on Steam Deck you can press `STEAM` + `X`. [...] This website makes use of cookies to enhance your browsing experience and provide additional functionality -> More info Deny Cookies - Allow Cookies\n\n⨯ Check out what systems our users are running on our special statistics page.\n\nFollow GamingOnLinux on\n\nMastodon Bluesky\n\nand\n\nMastodon Mastodon\n\nHome > Back to Tips & Guides\n\n# How to install extra software, apps and games on SteamOS and Steam Deck\n\n| Last updated: 14 Jan 2025 at 2:00 pm UTC   \n By Liam Squires-Hand\n\n4 comments\n\nThe Steam Deck with SteamOS (and other devices that will ship with SteamOS) use a locked-down filesystem, so installing extra software is a little different. Here's what you need to know in a simple to understand guide. [...] To do this on a SteamOS system you'll need to boot into Desktop Mode via the Power menu. Picture examples are from a Steam Deck with SteamOS 3.6:\n\nNote: in Desktop Mode, you'll have a shortcut on your Desktop named \"Return to Gaming Mode\" to go back to the main Steam Gaming Mode interface.\n\nOnce in Desktop Mode you're going to want to search for an app called Discover. Do this by tapping the bottom left button to open the menu on the desktop:\n\nDiscover may also show up on the bottom bar as a blue shopping bag icon.\n\nNote: anything installed in Desktop Mode will also need you to run the updates for it manually in Discover too. It's not automatic when in the main Gaming Mode. So remember to check back on it often. Example below shows many updates waiting in the Desktop Mode.",
+      "score": 0.70799106,
+      "raw_content": null,
+      "id": "d9019b-02"
+    },
+    {
+      "url": "https://docs.flatpak.org/en/latest/first-build.html",
+      "title": "Building your first Flatpak - Flatpak documentation",
+      "content": "```\n flatpak - builder -- force - clean -- user -- install - deps - from = flathub -- repo = repo -- install builddir org. flatpak. Hello. yml\n```\n\nThis command will first build each module that is listed in the manifest, install the contents of `builddir/files` in `/app` inside the sandbox and finally install the the whole application as a flatpak.\n\n## 4. Run the application🔗\n\nTo run the application:\n\n```\n flatpak run org. flatpak. Hello\n```\n\nIf you see `Helloworld, from a sandbox` on the terminal then congratulations, you’ve made an app!\n\n## 5. Share the application🔗\n\nIf you want to share the application you can create a single-file bundle. See Single-file bundles for more details on it.\n\n```\n      =\n``` [...] Skip to content\n\nFlatpak documentation\n\nBack to top \n\nView this page\n\nEdit this page\n\n# Building your first Flatpak🔗\n\nNote\n\nApp stores like Flathub have additional requirements on the building process. Please refer to their respective documentation for details.\n\nThis tutorial provides a quick introduction to build, install and share a basic flatpak package.\n\nIn order to complete this tutorial, please install `flatpak`. The setup page covers steps for most of the popular distributions.\n\nPlease also install `flatpak-builder` from your distribution. There is also a flatpak-builder Flatpak package on Flathub (this may contain Flathub specific downstream modifications).\n\nThen install the Flathub repository userwide: [...] ```\n id:  org.flatpak.Hello runtime:  org.freedesktop.Platformruntime-version:  '25.08' sdk:  org.freedesktop.Sdk command:  hello modules:  -  name:  hello  buildsystem:  simple  build-commands:  -  install -Dm755 hello.sh /app/bin/hello  sources:  -  type:  script  dest-filename:  hello.sh  commands:  -  echo \"Hello world, from a sandbox\"\n```\n\nThe application here is a simple script, that is self contained in the manifest! The install -Dm755 command will create a file containing our hello world script in `/app/bin/hello` with execution permissions inside the sandbox.\n\nIn a more complex application, the manifest would list multiple modules and build instructions.\n\n## 3. Build and install🔗\n\nNow that the app has a manifest, `flatpak-builder` can be used to build and install it:",
+      "score": 0.6952351,
+      "raw_content": null,
+      "id": "e9e676-03"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=2IE1vfaLF5E",
+      "title": "Day 2 - what you need to know about installing applications via flatpak & pacman",
+      "content": "[2:02] is the go-to it's uh according to steam it's the this is their description flat pack is a software development and package\n[2:10] management utility for linux we like it because it offers a way to install and run applications on steam deck on the writeable part of the disk with all the rest of your games and content ensuring\n[2:18] it won't be broken by a future steam deck system updates that's important to know because if you deviate off the flat pack route and do things\n[2:27] manually which i will show you or tell you when you know guide you how to do a little bit if you install stuff on their own they\n[2:35] could do a system update and erase the whole thing um and because this is more like a console and they're just allowing [...] [5:40] probably recommend doing this first thing when you set up your deck just so that's all set up nothing else can happen with that and\n[5:48] you just know your password i don't know security wise if that it's good to leave that on set i would think\n[5:55] not though so once again you do that in the terminal a console is a bash terminal just as a terminology that you might run into when running bash\n[6:03] commands later down the road it's a little technical jargon for some people that might not just you might not know that but\n[6:10] with that um you can also before you run anything or install anything you have to disable the read only state\n[6:18] now flat pack is allowed to write it's one of the applications to uh that is allowed to write uh the steam os and r [...] [4:53] you've been doing it for years if you're very new to it don't be too scared but don't go installing stuff that you just don't know about and don't trust so\n[5:01] with that sudo requires a password when you install the steam deck you do not set up a password so what do you do\n[5:09] once again steam they have a little guide that i have in the description they all you have to do is run a command called\n[5:17] p-a-s-s-w-d in the terminal and there's a terminal inside of the operating system or you know your\n[5:23] desktop that's called console with a k and you can do it there when you run the password uh\n[5:31] p-a-s-s-w-d once again when you run that it will ask you to input a password that then you have to confirm and that sets your system password and in fact i",
+      "score": 0.6947383,
+      "raw_content": null,
+      "id": "7e02ae-04"
+    },
+    {
+      "url": "https://www.reddit.com/r/SteamOS/comments/zpaplv/publishing_a_steam_deck_only_app_to_flatpak",
+      "title": "Publishing a Steam deck only app to flatpak : r/SteamOS",
+      "content": "I have just finished an application that is meant to be used only on SteamOS and specifically on the steam deck. I want to let users to",
+      "score": 0.6803909,
+      "raw_content": null,
+      "id": "1debac-05"
+    },
+    {
+      "url": "https://partner.steamgames.com/doc/steamhardware/steamdeck/faq",
+      "title": "Steam Deck FAQ (Steamworks Documentation)",
+      "content": "Yes. By default the OS updates will be distributed as a whole OS image, and we recommend installing additional applications via flatpak to avoid issues. If customers want to do more than what’s available by flatpak, they can turn off read-only mode. We don't recommend this though, as they may get their Steam Deck into a bad state or compromise their data. In addition, anything installed outside of flatpak (via pacman for instance) may be wiped with the next SteamOS update. More on that here.  \n  \n  \nWill the fact that the system is Wayland-based cause any known performance hit to existing games or any missing functionality to be aware of?  \n  \nThere aren't known functional differences or performance problems, but if users encounter any issues, we'll look into them. [...] Yes, we're talking to Godot as well and are actively supporting them and want their engine to work well with Steam Deck.  \n  \n  \nHow many sound channels does Steam Deck support?  \n  \nWe support two when using the onboard speakers, but we support multi-channel when using HDMI or Bluetooth.   \n  \n  \nWill there be a way to install external apps on deck without going into dev mode?  \n  \nYes. You'll be able to install external apps via Flatpak or other software without going into developer mode. [...] + Steam Deck \n    - Social Media Templates\n    - Steam Deck Brand Guidelines and Logos\n    - Steam Deck Developer Kits\n    - Steam Deck FAQ\n    - Steam Deck SVG Line Art\n    - Steamworks Virtual Conference: Steam Deck - Nov 12th 2021\n  + Steam Deck and Steam Machine Compatibility Review \n    - Steam Deck Verified Landing Pages\n  + Steam Frame \n    - Connecting adb to Lepton\n    - How to load and run games on Steam Frame\n    - How to upload Android APKs to Steam\n    - OpenXR Game Engine Integrations \n       Custom Engines\n       Godot\n       Unity\n       Unreal Engine\n    - Setting up your Steam Frame for development\n    - Steam Frame Debugging\n    - Steam Frame Input\n    - Steam Frame Standalone Compatibility Review Process \n       Performance Assessment Overlay (VR titles)",
+      "score": 0.666736,
+      "raw_content": null,
+      "id": "c86323-06"
+    },
+    {
+      "url": "https://help.steampowered.com/en/faqs/view/671A-4453-E8D2-323C",
+      "title": "Steam Deck and Steam Machine Desktop: FAQ",
+      "content": "You can use the Discover Software Center (on the taskbar) to install apps. The Discover Software Center installs applications using flatpak technology (more",
+      "score": 0.66203266,
+      "raw_content": null,
+      "id": "2c7e5c-07"
+    }
+  ],
+  "response_time": 2.39,
+  "request_id": "1c19db49-e4ce-4443-86e8-aadbb4e1332d"
+}

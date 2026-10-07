@@ -1,0 +1,74 @@
+{
+  "query": "Steamworks SDK developer overview C++ Rust API",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://partner.steamgames.com/doc/sdk/api",
+      "title": "Steamworks API Overview (Steamworks Documentation)",
+      "content": "#### Languages:\n\n ActionScript (Adobe Flash, AIR)  \n  + Discussion thread\n C#  \n  + Discussion thread\n  + Facepunch.Steamworks - Steamworks Developer Discussions support thread\n  +  - Steamworks Developer Discussions support thread\n D  \n  + Discussion thread\n  + DerelictSteamworks - Steamworks Developer Discussions support thread\n Java  \n  + Discussion thread\n  + steamworks4j - Steamworks Developer Discussions support thread\n JavaScript  \n  + Discussion thread\n  + Greenworks - Steamworks Developer Discussions support thread\n Python  \n  + Discussion thread\n  + SteamworksPy - Steamworks Developer Discussions support thread\n Rust  \n  + Discussion Thread\n  + steamworks-rs - Steamworks Developer Discussions support thread\n\n## Flat interface for binding to other languages [...] ## Manual Callback Dispatch\n\nThe classes and macros used to register callbacks are convenient in C++ code. But there is also a lower-level mechanism for dealing with callbacks. This mechanism operates more like a Windows event loop. Instead of a single function that dispatches all of the callbacks and call results to active listeners, you fetch the next available callback in a loop, and dispatch it using whatever mechanisms you want. The manual dispatch mode is especially useful for binding layers that expose the Steamworks SDK to languages other than C++. See `SteamAPI_ManualDispatch_Init()` in `steam_api.h` for more information.\n\n## Steam Game Servers [...] Steamworks API Overview\n\nSteamworks Documentation > Steamworks SDK > Steamworks API Overview\n\n## Overview\n\nThe Steamworks API allows your game to take full advantage of Steam by accessing all of the underlying systems provided through the API. This includes things such as pausing your game when the user opens the Steam Overlay, inviting friends to play, allowing players to unlock Steam Achievements, letting players compete on the Steam Leaderboards and much more.  \n  \nThe Steamworks API Reference catalogs and documents every interface, function, callback, and type supported in the API.  \n  \nIntegration with the Steamworks API is never required to ship your product on Steam, but it is highly recommended as it allows you to accomplish many interactions that Steam users expect.",
+      "score": 0.6685563,
+      "raw_content": null,
+      "id": "b45eba-00"
+    },
+    {
+      "url": "https://github.com/Noxime/steamworks-rs",
+      "title": "GitHub - Noxime/steamworks-rs: Rust bindings to the SteamWorks SDK · GitHub",
+      "content": "use:: AppId; use:: Client; use:: FriendFlags; use:: PersonaStateChange; fn main(){let Client:: init(). unwrap(); let. register_callback(p: PersonaStateChange{println!(\"Got callback: {:?}\",);}); let. utils(); println!(\"Utils:\"); println!(\"AppId: {:?}\",.()); println!(\"UI Language: {}\",.()); let. apps(); println!(\"Apps\"); println!(\"IsInstalled(480): {}\",.(AppId(480))); println!(\"InstallDir(480): {}\",.(AppId(480))); println!(\"BuildId: {}\",.()); println!(\"AppOwner: {:?}\",.()); println!(\"Langs: {:?}\",.()); println!(\"Lang: {}\",.()); println!(\"Beta: {:?}\",.()); let. friends(); println!(\"Friends\"); let. get_friends(FriendFlags:: IMMEDIATE); println!(\"{:?}\",); for in &{println!(\"Friend: {:?} - {}({:?})\",.(),.(),.());. request_user_information(. id(), true);} for in 0 50{. run_callbacks();:::::: [...] ## Features\n\n`serde`: This feature enables serialization and deserialization of some types with `serde`. `image`: This feature allows accessing image data like icons with `image` crate.\n\n## License\n\nThis crate is dual-licensed under Apache and MIT, except for the files in [`steamworks-sys/lib/steam/`]\n\n## Help, I can't run my game!\n\nIf you are seeing errors like `STATUS_DLL_NOT_FOUND`, `Image not found` etc. You are likely missing the Steamworks SDK Redistributable files. Steamworks-rs loads the SDK dynamically, so the libraries need to exist somewhere the operating system can find them. This is likely next to your game binary (.exe on windows). You can find the required files in the SDK release ZIP, under `lib\\steam\\redistributable_bin`. See #63 for further details\n\n## About [...] ## History\n\n618 Commits\n\n618 Commits\n\n## Folders and files\n\n| Name | Name | Last commit message | Last commit date |\n ---  --- |\n| .github/workflows | .github/workflows |  |  |\n| examples | examples |  |  |\n| src | src |  |  |\n| steamworks-sys | steamworks-sys |  |  |\n| .gitignore | .gitignore |  |  |\n| Cargo.toml | Cargo.toml |  |  |\n| LICENSE-APACHE | LICENSE-APACHE |  |  |\n| LICENSE-MIT | LICENSE-MIT |  |  |\n| README.md | README.md |  |  |\n| rustfmt.toml | rustfmt.toml |  |  |\n| steam\\_appid.txt | steam\\_appid.txt |  |  |\n| updating-steamworks-sdk-version.md | updating-steamworks-sdk-version.md |  |  |\n|  |\n\n## Repository files navigation\n\n# steamworks\n\ncrates.io Documentation License\n\nThis crate provides Rust bindings to the Steamworks SDK.\n\n## Usage",
+      "score": 0.6578248,
+      "raw_content": null,
+      "id": "254d99-01"
+    },
+    {
+      "url": "https://docs.rs/steamworks",
+      "title": "steamworks - Rust",
+      "content": "## Crate steamworks\n\n# Crate steamworks\n\nSource\n\nExpand description\n\n## §steamworks\n\ncrates.io Documentation License\n\nThis crate provides Rust bindings to the Steamworks SDK.\n\n### §Usage\n\nAdd the following to your `Cargo.toml`:\n\n```\n[dependencies] steamworks = \"0.13.0\"\n```\n\n| Crate | SDK | MSRV |\n --- \n| git | 1.64 | 1.80.0 |\n| 0.13.0 | 1.64 | 1.80.0 |\n| 0.12.0 | 1.62 | 1.80.0 |\n| 0.11.0 | 1.58a | 1.71.1 |\n| 0.10.0 | 1.54 | 1.56.1 |\n| 0.9.0 | 1.53a | 1.56.1 |\n\n### §Example\n\nYou can find more examples in examples. [...] ### §Example\n\nYou can find more examples in examples.\n\n```\nuse use use use fn let let println!\"Got callback: {:?}\" let println!\"Utils:\"println!\"AppId: {:?}\"println!\"UI Language: {}\" let println! \"Apps\"println!\"IsInstalled(480): {}\" 480println!\"InstallDir(480): {}\" 480println!\"BuildId: {}\"println!\"AppOwner: {:?}\"println!\"Langs: {:?}\"println!\"Lang: {}\"println!\"Beta: {:?}\" let println! \"Friends\" let println!\"{:?}\" for in &println!\"Friend: {:?} - {}({:?})\" true for _ in 0 50 100\n```\n\n### §Features\n\n`serde`: This feature enables serialization and deserialization of some types with `serde`. `image`: This feature allows accessing image data like icons with `image` crate.\n\n### §License\n\nThis crate is dual-licensed under Apache and MIT, except for the files in [`steamworks-sys/lib/steam/`] [...] ## Enums§\n\nAccountType\n:   Steam account types.\n\nAppIDs\n:   AppID filter for queries. The “consumer” app is the app that the content is for. The “creator” app is a separate editor to create the content in, if applicable.\n\nAuthSessionError\n:   Errors from `begin_authentication_session`\n\nAuthSessionValidateError\n:   Errors from `ValidateAuthTicketResponse`\n\nCallbackResult\n:   A sum type over all possible callback results\n\nChatEntryType\n\nChatMemberStateChange\n:   Flags describing how a users lobby state has changed. This is provided from `LobbyChatUpdate`.\n\nChatRoomEnterResponse\n\nComparisonFilter\n\nDenyReason\n:   Reason for when a client fails to join or is kicked from a game server.\n\nDistanceFilter\n\nFileType\n\nFloatingGamepadTextInputMode\n\nFriendState\n\nGamepadTextInputLineMode",
+      "score": 0.6407488,
+      "raw_content": null,
+      "id": "656c28-02"
+    },
+    {
+      "url": "https://github.com/treeform/steamworks/blob/master/README.md",
+      "title": "steamworks/README.md at master · treeform/steamworks · GitHub",
+      "content": "## Getting Started\n\n### Step 1 - Download the Steamworks SDK\n\nDownload the C++ SDK from Valve:\n\nCopy the correct Steam API dynamic library for your platform next to your game or make sure it is on your library path:\n\n Windows 64-bit: `steam_api64.dll`\n Windows 32-bit: `steam_api.dll`\n macOS: `libsteam_api.dylib`\n Linux: `libsteam_api.so`\n\n### Step 2 - Add `steam_appid.txt`\n\nPut a `steam_appid.txt` file in the directory you run from. It should contain your Steam app ID number without spaces.\n\n### Step 3 - Run the Smoke Tests\n\n```\nnim r tests/test.nim nim r tests/test2.nim\n```\n\n`tests/test.nim` is the older human-readable test. `tests/test2.nim` is a broad smoke test that touches many more Steamworks surfaces when the current account and app setup allow it.\n\n## Supported Steam Interfaces",
+      "score": 0.63234437,
+      "raw_content": null,
+      "id": "dcdc64-03"
+    },
+    {
+      "url": "https://steamcommunity.com/discussions/forum/0/4406292251594558895",
+      "title": "Steam API (c++) :: Steam Discussions",
+      "content": "#7\n\n \n\nThe Steamworks C++ API is for game developers to integrate their game with Steam features. Stuff like programatically logging in Steam is not part of the functionality of the API.  \n  \nTo even download the SDK in order to actually use the API you're supposed to sign up as a Steamworks Partner, sign the NDA, agree to the Steam Distribution Agreement, etc.  \n  \n> Originally posted by Yuna:\n>\n> Do you think I should send some random friend requests to the group admins? (I don't really like sending out random friend requests, sorry.)\n\nNo. To get access to the developer group you sign up to be a Steamworks Partner, which is for people wanting to distribute a game on Steam.\n\n#8",
+      "score": 0.62523276,
+      "raw_content": null,
+      "id": "083466-04"
+    },
+    {
+      "url": "https://crates.io/crates/steamworks",
+      "title": "steamworks - crates.io: Rust Package Registry",
+      "content": "This crate provides Rust bindings to the Steamworks SDK. Usage. Add the following to your Cargo.toml : [dependencies]",
+      "score": 0.60077465,
+      "raw_content": null,
+      "id": "d366bf-05"
+    },
+    {
+      "url": "https://github.com/rlabrecque/SteamworksSDK",
+      "title": "GitHub - rlabrecque/SteamworksSDK: Mirror of SteamworksSDK. Copyright Valve Corporation. NOTE: This has been run through dos2unix so the line endings are consistent but do not match the originals. · GitHub",
+      "content": "through a call result. The FileDetailsResult_t struct contains information on the original file's size, SHA1, etc. ISteamFriends  Deprecated k_EFriendRelationshipSuggested relationship type that was originally used by Facebook linking feature ---------------------------------------------------------------- v1.37 23rd May 2016 ---------------------------------------------------------------- Starting with this release, SDK forward-compatibility has been improved. All executables and libraries built using the official C++ headers from this SDK will continue to work even when paired with runtime DLLs from future SDKs. This will eventually allow for the mixing of dynamic libraries (such as third-party plug-ins) built with different versions of Steamworks. The VERSION_SAFE_STEAM_API_INTERFACES [...] versioned functions to fetch the interfaces. No more need to mess with HSteamPipes or HSteamUsers directly.  The json file now has much more detailed information and several errors have been fixed.  steam_api_interop.cs has been removed and will no longer be supported.  There is a new manual dispatch API for callbacks, which works similarly to a windows event loop. This is a replacement for the existing callback registeration and dispatch mechanisms, which which are nice in C++ but awkward to use outside of C++. ---------------------------------------------------------------- v1.47 3rd December 2019 ---------------------------------------------------------------- macOS  Updated steamcmd binaries to be 64-bit ISteamNetworkingSockets  Added API to set configuration options atomically, at [...] Dashboard ISteamApps  Added RequestAllProofOfPurchaseKeys ---------------------------------------------------------------- v1.36 9th February 2016 ---------------------------------------------------------------- ISteamController:  added new function TriggerRepeatedHapticPulse() Revision History: ---------------------------------------------------------------- v1.35 21st September 2015 ---------------------------------------------------------------- ISteamController:  The controller API has been redesigned to work with production Steam Controllers and take advantage of the configuration panel inside of Steam. The documentation on the partner site has a full overview of the new API. ISteamRemoteStorage:  Added asynchronous file read and write methods. These methods will not block your",
+      "score": 0.59880555,
+      "raw_content": null,
+      "id": "ef7417-06"
+    },
+    {
+      "url": "https://crates.io/crates/steam-webapi-rust-sdk",
+      "title": "steam-webapi-rust-sdk - crates.io: Rust Package Registry",
+      "content": "A Rust SDK for the Steam Web API. It provides typed access to Steam player, app, and Dota 2 data, with local response caching",
+      "score": 0.5835125,
+      "raw_content": null,
+      "id": "6f1e24-07"
+    }
+  ],
+  "response_time": 2.54,
+  "request_id": "dcdd1099-4485-4ba0-93d2-73ecb4b24ab1"
+}
