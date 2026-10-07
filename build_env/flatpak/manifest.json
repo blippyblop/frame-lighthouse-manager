@@ -1,48 +1,33 @@
 {
-  "id": "io.github.blippyblop.lighthouse-pm",
-  "runtime": "org.kde.Platform",
-  "runtime-version": "6.11",
-  "sdk": "org.kde.Sdk",
-  "appstream-compat": true,
+  "id": "com.blippyblop.LighthousePM",
+  "name": "Lighthouse Power Manager",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
+  "sdk-version": "24.08",
+  "base": "org.freedesktop.Platform",
+  "base-version": "24.08",
+  "appstream-compat": false,
   "separate-locales": false,
-  "rename-desktop-entry": "lighthouse-pm",
-  "build-options": {
-    "cxx-autotools": false
-  },
   "modules": [
     {
       "name": "lighthouse-pm",
-      "buildsystem": "cmake",
-      "config-opts": [
-        "-DCMAKE_BUILD_TYPE=Release",
-        "-DCMAKE_INSTALL_PREFIX=/app"
-      ],
+      "buildsystem": "simple",
+      "build-commands": [],
       "sources": [
         {
           "type": "dir",
-          "path": "../../"
+          "path": "staged/app"
         }
-      ],
-      "cleanup": [
-        "/include",
-        "/lib/*.a",
-        "/lib/pkgconfig",
-        "/share/pkgconfig",
-        "/share/cmake",
-        "/man",
-        "/share/man",
-        "/share/zsh"
       ]
     }
   ],
   "finish-args": [
     "--share=ipc",
-    "--socket=bluetooth",
-    "--socket=system-bus",
-    "--talk-name=org.bluez",
-    "--talk-name=org.kde.KGlobalSettings",
-    "--talk-name=org.kde.kconfig.notify",
-    "--filesystem=xdg-config/kdeglobals:ro",
-    "--env=LD_LIBRARY_PATH=/app/lib"
+    "--socket=wayland",
+    "--socket=x11",
+    "--socket=fallback",
+    "--socket=session-bus",
+    "--device=dri"
   ]
 }

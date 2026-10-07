@@ -10,6 +10,25 @@ the companion for switching them back on without opening Steam.
 - [Screens & features](docs/SCREENS.md)
 - [BLE protocol](docs/PROTOCOL.md)
 
+## Getting it (Valve Frame, aarch64)
+
+The release is a self-contained flatpak: it ships its own Qt 6.8 / KF6 6.14 /
+Kirigami 6.14 and glibc, so it runs against the firmware's stack without
+modifying the system.
+
+```sh
+flatpak install lighthouse-pm-1.0.0-aarch64.flatpak   # this repo; base runtime fetched from Flathub
+flatpak run com.blippyblop.LighthousePM
+```
+
+Bluetooth: flatpak sandboxes cannot reach the system D-Bus, so live BLE is
+unavailable inside the sandbox (the UI and all settings still work). For full
+BLE, run the installed wrapper directly:
+
+```sh
+~/.local/share/flatpak/app/com.blippyblop.LighthousePM/active/1.0.0/files/lighthouse-pm.sh
+```
+
 ## Building (cross, x86_64 → aarch64)
 
 The release pipeline builds for aarch64 Linux (Alpine/KDE, musl). Manual
