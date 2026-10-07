@@ -53,6 +53,7 @@ libKirigamiPlatform.so.6
 libKirigamiPrimitives.so.6
 libKirigamiPrivate.so.6
 libOpenGL.so.0
+libQt6Bluetooth.so.6
 libQt6Core.so.6
 libQt6DBus.so.6
 libQt6Gui.so.6
@@ -230,6 +231,13 @@ sockets=wayland,x11,fallback,session-bus
 devices=dri
 EOF
 ostree init --repo="$A/.ostree"
-ostree --repo="$A/.ostree" commit -b "app/$APPID/aarch64/$BRANCH" -m "Lighthouse Power Manager $VER" -- "$A"
+# flatpak's installer (flatpak 1.16, flatpak-dir.c validate_commit_metadata /
+# resolve_op_from_commit) requires the keyfile in the commit's *main* metadata
+# as xa.metadata, byte-identical to the bundle header "metadata" (which
+# build-bundle takes from the tree's metadata file). A bare `ostree commit`
+# writes neither, and the bundle fails to install with "Commit metadata for
+# ... not matching expected metadata".
+ostree --repo="$A/.ostree" commit -b "app/$APPID/aarch64/$BRANCH" -m "Lighthouse Power Manager $VER" \
+  --add-metadata-string=xa.metadata="$(cat "$A/metadata")" -- "$A"
 flatpak build-bundle --arch=aarch64 "$A/.ostree" "$OUT/$APPID-$VER-aarch64.flatpak" "$APPID" "$BRANCH"
 echo "bundle: $OUT/$APPID-$VER-aarch64.flatpak"

@@ -48,42 +48,46 @@ jobs:
             dist/icon.png
           generate_release_notes: true
 
-  # Self-contained flatpak (bundles the KDE platform runtime) for aarch64 KDE
-  # desktops. Built natively on an ARM64 runner with flatpak-builder against
-  # org.kde.Sdk -- no QEMU needed.
+  # Self-contained flatpak (bundles the firmware glibc/Qt/KF6/Kirigami under
+  # /app/rootfs) for aarch64 KDE desktops. Built natively on an ARM64 runner:
+  # the same Holo Core rootfs the binary is built against is kept around and
+  # used as the pristine library source for build_env/flatpak/stage.sh, which
+  # stages the payload, commits it with ostree (including the xa.metadata key
+  # flatpak's installer requires) and wraps it with `flatpak build-bundle`.
   flatpak-aarch64:
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install flatpak + flatpak-builder
+      - name: Install flatpak + build deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y flatpak flatpak-builder
+          sudo apt-get install -y flatpak ostree zstd
 
-      - name: Add flathub remote
+      - name: Build binary (Holo rootfs, kept for staging)
+        env:
+          KEEP_ROOTFS: "1"
+          ROOTFS_DIR: /tmp/holo-rootfs
+        run: bash build_env/build_holo_aarch64.sh
+
+      - name: Stage + bundle flatpak
         run: |
-          flatpak remote-add --if-not-exists --user flathub \
-            https://dl.flathub.org/repo/flathub.flatpakrepo
-
-      - name: Build flatpak (aarch64, native)
-        run: |
-          flatpak-builder --user --force-clean --arch=aarch64 \
-            dist/ build_env/flatpak/manifest.json
-
-      - name: List bundle
-        run: ls -la dist/
+          sh build_env/flatpak/stage.sh \
+            /tmp/holo-rootfs /tmp/holo-rootfs \
+            dist/lighthouse-pm-aarch64 dist/flatpak-stage
+          ls -la dist/
+          file dist/flatpak-stage/*.flatpak
 
       - name: Upload flatpak artifact
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-pm-aarch64-flatpak
-          path: dist/*.flatpak
+          path: dist/flatpak-stage/*.flatpak
 
       - name: Upload flatpak to release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.flatpak
+          files: dist/flatpak-stage/*.flatpak
           generate_release_notes: false

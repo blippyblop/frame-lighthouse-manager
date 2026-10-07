@@ -89,6 +89,10 @@ cleanup() {
   $SUDO umount "$ROOTFS/sys"      2>/dev/null
   $SUDO umount "$ROOTFS/proc"     2>/dev/null
   $SUDO umount "$ROOTFS$SRC_IN_ROOTFS" 2>/dev/null
+  if [ "${KEEP_ROOTFS:-0}" = "1" ]; then
+    log "keeping rootfs at $ROOTFS (KEEP_ROOTFS=1)"
+    return
+  fi
   rm -rf "$ROOTFS"
 }
 trap cleanup EXIT
