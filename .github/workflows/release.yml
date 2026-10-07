@@ -8,31 +8,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Build the aarch64 binary natively inside Arch Linux aarch64 (the Frame's
-  # distro), so it links against the exact libraries the device ships and runs
-  # there without bundling anything. Runs under qemu on GHA's x86 runner.
+  # Native aarch64 build on a GitHub-hosted ARM64 runner (no emulation).
+  # Bootstraps an Arch Linux aarch64 rootfs (the Frame's distro) and builds
+  # inside it, so the binary links against the exact libraries the device
+  # ships and runs there without bundling anything.
   build-aarch64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build + smoke test in Arch aarch64
-        run: |
-          docker run --rm --platform linux/arm64 \
-            -v "$GITHUB_WORKSPACE:/src" -w /src \
-            archlinux/archlinux:latest \
-            /bin/bash /src/build_env/build_arch_aarch64.sh
+      - name: Build + smoke test (Arch aarch64 rootfs)
+        run: bash build_env/build_arch_aarch64.sh
 
-      - name: Host-side binary inspection
+      - name: Inspect built binary
         run: |
-          file build/lighthouse-pm
-          echo "=== NEEDED (host readelf) ==="
-          readelf -d build/lighthouse-pm | grep -E "NEEDED" || true
-
-      - name: Package
-        run: |
-          mkdir -p dist
-          cp build/lighthouse-pm dist/lighthouse-pm-aarch64
+          file dist/lighthouse-pm-aarch64
+          echo "=== NEEDED ==="
+          readelf -d dist/lighthouse-pm-aarch64 | grep -E "NEEDED" || true
+          echo "=== smoke log (tail) ==="
+          tail -n 40 dist/smoke.log 2>/dev/null || true
           cp assets/icon.png dist/ 2>/dev/null || true
 
       - name: Upload artifacts
@@ -42,6 +37,7 @@ jobs:
           path: |
             dist/lighthouse-pm-aarch64
             dist/icon.png
+            dist/smoke.log
 
       - name: Create release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
@@ -53,24 +49,25 @@ jobs:
           generate_release_notes: true
 
   # Self-contained flatpak (bundles the KDE platform runtime) for aarch64 KDE
-  # desktops. Built with flatpak-builder against org.kde.Sdk.
+  # desktops. Built natively on an ARM64 runner with flatpak-builder against
+  # org.kde.Sdk -- no QEMU needed.
   flatpak-aarch64:
-    needs: [ build-aarch64 ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install flatpak + qemu
+      - name: Install flatpak + flatpak-builder
         run: |
           sudo apt-get update
-          sudo apt-get install -y flatpak flatpak-builder qemu-user-static
+          sudo apt-get install -y flatpak flatpak-builder
 
       - name: Add flathub remote
         run: |
           flatpak remote-add --if-not-exists --user flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo
 
-      - name: Build flatpak (aarch64)
+      - name: Build flatpak (aarch64, native)
         run: |
           flatpak-builder --user --force-clean --arch=aarch64 \
             --build-dir=flatpak-build \
