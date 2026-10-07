@@ -9,17 +9,17 @@ on:
 
 jobs:
   # Native aarch64 build on a GitHub-hosted ARM64 runner (no emulation).
-  # Bootstraps an Arch Linux aarch64 rootfs (the Frame's distro) and builds
-  # inside it, so the binary links against the exact libraries the device
-  # ships and runs there without bundling anything.
+  # Bootstraps Valve's Holo Core aarch64 preview rootfs -- the Frame's actual
+  # OS base -- and builds inside it, so the binary links against the exact
+  # libraries the device ships and runs there without bundling anything.
   build-aarch64:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build + smoke test (Arch aarch64 rootfs)
-        run: bash build_env/build_arch_aarch64.sh
+      - name: Build + smoke test (Holo Core aarch64 rootfs, native)
+        run: bash build_env/build_holo_aarch64.sh
 
       - name: Inspect built binary
         run: |
@@ -70,7 +70,6 @@ jobs:
       - name: Build flatpak (aarch64, native)
         run: |
           flatpak-builder --user --force-clean --arch=aarch64 \
-            --build-dir=flatpak-build \
             dist/ build_env/flatpak/manifest.json
 
       - name: List bundle
