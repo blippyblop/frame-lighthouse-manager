@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lighthouse Power Manager
+GenericName=Lighthouse Power Management
+Comment=Turn SteamVR lighthouse base stations on, off and standby over Bluetooth
+Exec=lighthouse-pm.sh
+Icon=com.blippyblop.LighthousePM
+Terminal=false
+Categories=Utility;Qt;
+Keywords=Vive;Index;lighthouse;base station;bluetooth;SteamVR;valve;

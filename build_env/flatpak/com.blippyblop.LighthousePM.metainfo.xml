@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.blippyblop.LighthousePM</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-Proprietary</project_license>
+  <name>Lighthouse Power Manager</name>
+  <summary>Control SteamVR lighthouse base stations over Bluetooth</summary>
+  <description>
+    <p>
+      Turns SteamVR lighthouse (Valve Index, HTC Vive, and V2 (2.0) base
+      stations) on, off and standby over Bluetooth Low Energy, and organizes
+      them into named groups and nicknames.
+    </p>
+    <p>
+      Lighthouses normally sleep while the SteamVR runtime is running; this
+      app is the companion for switching them back on without opening Steam.
+      BLE scanning and GATT go through BlueZ D-Bus directly, so it works on
+      the Valve Steam Frame, which does not ship QtBluetooth.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.blippyblop.LighthousePM.desktop</launchable>
+  <provides>
+    <binary>lighthouse-pm</binary>
+  </provides>
+  <releases>
+    <release version="0.1.0" date="2026-10-07">
+      <description>
+        <p>First release of the BlueZ D-Bus rewrite for the Valve Steam Frame (aarch64). Self-contained: bundles the firmware Qt 6.8 / KF6 / Kirigami / glibc under /app/rootfs.</p>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1" />
+  <developer_name>blippyblop</developer_name>
+  <url type="homepage">https://github.com/blippyblop/frame-lighthouse-manager</url>
+</component>

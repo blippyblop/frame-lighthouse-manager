@@ -53,7 +53,6 @@ libKirigamiPlatform.so.6
 libKirigamiPrimitives.so.6
 libKirigamiPrivate.so.6
 libOpenGL.so.0
-libQt6Bluetooth.so.6
 libQt6Core.so.6
 libQt6DBus.so.6
 libQt6Gui.so.6
@@ -206,11 +205,26 @@ patchelf --set-interpreter /app/rootfs/usr/lib/ld-linux-aarch64.so.1 \
 # 7) Build the flatpak bundle (ostree repo + ref + bundle)
 APPID=com.blippyblop.LighthousePM
 BRANCH=stable
-VER=1.0.0
+VER=0.1.0
+HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ASSETS=$(CDPATH= cd -- "$HERE/../.." && pwd)/assets
 A=$OUT/appdir
 rm -rf "$A"
-mkdir -p "$A/files"
-cp -a "$OUT/app/." "$A/files/"
+mkdir -p "$A/files/bin" "$A/files/share/applications" \
+         "$A/files/share/metainfo" "$A/files/share/icons/hicolor/512x512/apps"
+# binary + wrapper live in /app/bin so the metadata `command` resolves via PATH
+# (a bare /app/lighthouse-pm.sh is not on the sandbox PATH and won't launch
+# from the app grid).
+cp -a "$OUT/app/lighthouse-pm"    "$A/files/bin/"
+cp -a "$OUT/app/lighthouse-pm.sh" "$A/files/bin/"
+cp -a "$OUT/app/rootfs"           "$A/files/rootfs"
+# .desktop + metainfo + icon: required for the app grid / Discover presentation
+install -m 644 "$HERE/com.blippyblop.LighthousePM.desktop" \
+               "$A/files/share/applications/"
+install -m 644 "$HERE/com.blippyblop.LighthousePM.metainfo.xml" \
+               "$A/files/share/metainfo/"
+install -m 644 "$ASSETS/icon.png" \
+               "$A/files/share/icons/hicolor/512x512/apps/com.blippyblop.LighthousePM.png"
 cat > "$A/metadata" <<EOF
 [Application]
 name=$APPID

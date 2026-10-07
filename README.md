@@ -20,7 +20,7 @@ Kirigami 6.14 and glibc, so it runs against the firmware's stack without
 modifying the system.
 
 ```sh
-flatpak install lighthouse-pm-1.0.0-aarch64.flatpak   # this repo; base runtime fetched from Flathub
+flatpak install com.blippyblop.LighthousePM-0.1.0-aarch64.flatpak   # this repo; base runtime fetched from Flathub
 flatpak run com.blippyblop.LighthousePM
 ```
 
@@ -29,7 +29,7 @@ unavailable inside the sandbox (the UI and all settings still work). For full
 BLE, run the installed wrapper directly:
 
 ```sh
-~/.local/share/flatpak/app/com.blippyblop.LighthousePM/active/1.0.0/files/lighthouse-pm.sh
+~/.local/share/flatpak/app/com.blippyblop.LighthousePM/current/active/files/bin/lighthouse-pm.sh
 ```
 
 ## Building for the Frame (cross, x86_64 → aarch64, firmware sysroot)
