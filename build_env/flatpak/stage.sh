@@ -43,6 +43,9 @@ resolve_lib() {
     if [ -e "$f" ]; then readlink -f "$f"; return 0; fi
     t=$(ls "$FW_ROOTFS/usr/lib/$1".* 2>/dev/null | sort -V | tail -1)
     if [ -n "$t" ] && [ -e "$t" ]; then readlink -f "$t"; return 0; fi
+    # some libs live in private subdirs (e.g. libproxy/0.5/libpxbackend)
+    t=$(find "$FW_ROOTFS/usr/lib" -name "$1" 2>/dev/null | head -1)
+    if [ -n "$t" ]; then rt=$(readlink -f "$t") && [ -f "$rt" ] && { echo "$rt"; return 0; }; fi
     f="$SYSROOT/usr/lib/$1"
     if [ -f "$f" ]; then readlink -f "$f"; return 0; fi
     return 1
