@@ -15,6 +15,7 @@ SYSROOT=$2
 BINARY=$3
 OUT=$4
 RFS=$OUT/app/rootfs
+OPTIONAL_LIBS="libQt6WaylandEglClientHwIntegration.so.6"
 
 rm -rf "$OUT"
 mkdir -p "$RFS/usr/lib" "$RFS/etc/fonts" "$RFS/usr/share/fonts" "$RFS/var/cache/fontconfig"
@@ -24,6 +25,11 @@ mkdir -p "$RFS/usr/lib" "$RFS/etc/fonts" "$RFS/usr/share/fonts" "$RFS/var/cache/
 UNRESOLVED=0
 while read -r name; do
   s="$SYSROOT/usr/lib/$name"
+  # entries listed here are warn-only if absent: the firmware tree we stage
+  # from is self-consistent, so a lib the ROOTFS doesn't ship can't be
+  # dlopen'd by its own plugins either (e.g. Holo preview builds Qt
+  # wayland without the EGL hw-integration private lib).
+  case " $OPTIONAL_LIBS " in *" $name "*) opt=1;; *) opt=0;; esac
   if [ -L "$s" ]; then
     t=$(readlink "$s")
     if [ ! -f "$FW_ROOTFS/usr/lib/$t" ]; then echo "MISSING TARGET: $name -> $t" >&2; continue; fi
@@ -43,8 +49,12 @@ while read -r name; do
       cp -a "$t" "$RFS/usr/lib/"
       ln -s "$b" "$RFS/usr/lib/$name"
     else
-      echo "UNRESOLVED: $name" >&2
-      UNRESOLVED=$((UNRESOLVED+1))
+      if [ "$opt" -eq 1 ]; then
+        echo "optional lib absent in rootfs (ok): $name" >&2
+      else
+        echo "UNRESOLVED: $name" >&2
+        UNRESOLVED=$((UNRESOLVED+1))
+      fi
     fi
   fi
 done <<'LIBS'
