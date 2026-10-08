@@ -149,23 +149,40 @@ libzstd.so.1
 LIBS
 chmod +x "$RFS"/usr/lib/ld-linux-aarch64.so.1
 
-# 2) QML modules + plugins (whole trees)
-mkdir -p "$RFS/usr/lib/qt6"
-cp -a "$FW_ROOTFS/usr/lib/qt6/qml" "$RFS/usr/lib/qt6/qml"
-cp -a "$FW_ROOTFS/usr/lib/qt6/plugins" "$RFS/usr/lib/qt6/plugins"
-# platform-theme plugins ship a KIO/Widgets dep chain we do not bundle
-rm -f "$RFS/usr/lib/qt6/plugins/platformthemes/KDEPlasmaPlatformTheme6.so" \
-      "$RFS/usr/lib/qt6/plugins/platformthemes/libqgtk3.so" \
-      "$RFS/usr/lib/qt6/plugins/platformthemes/libqxdgdesktopportal.so"
+# 2) QML modules + plugins: whitelist ONLY what the app + Kirigami import.
+#    The firmware ships every Qt/KDE module (Plasma, KWin, WebEngine,
+#    VirtualKeyboard, every Controls style...) — bundling all that costs
+#    ~50 MB of bundle for nothing. App imports: QtQuick, Controls (Fusion),
+#    Layouts, org.kde.kirigami.
+mkdir -p "$RFS/usr/lib/qt6/qml/org/kde" "$RFS/usr/lib/qt6/plugins"
+QML="$FW_ROOTFS/usr/lib/qt6/qml"
+cp -a "$QML/QtQml" "$QML/QtCore" "$RFS/usr/lib/qt6/qml/"
+mkdir -p "$RFS/usr/lib/qt6/qml/QtQuick"
+for m in Controls Templates Layouts Effects Shapes tooling Window; do
+  cp -a "$QML/QtQuick/$m" "$RFS/usr/lib/qt6/qml/QtQuick/"
+done
+# Controls: keep Basic (required base/fallback) + Fusion (the style the app
+# requests); drop Material/Universal/Imagine/macOS/iOS/Windows/NativeStyle
+for s in Material Universal Imagine FluentWinUI3 macOS iOS Windows NativeStyle; do
+  rm -rf "$RFS/usr/lib/qt6/qml/QtQuick/Controls/$s"
+done
+cp -a "$QML/org/kde/kirigami" "$RFS/usr/lib/qt6/qml/org/kde/"
+# plugins: runtime platform + input + image/icon support only
+for d in platforms xcbglintegrations wayland-graphics-integration-client \
+         wayland-shell-integration platforminputcontexts iconengines \
+         imageformats generic; do
+  cp -a "$FW_ROOTFS/usr/lib/qt6/plugins/$d" "$RFS/usr/lib/qt6/plugins/"
+done
 
-# 3) Fonts: basic UI families only (no CJK/bitmaps/rare scripts)
-for d in TTF adobe-source-code-pro cantarell gnu-free; do
+# 3) Fonts: slim UI set — Cantarell + Source Code Pro (mono) + the four core
+#    Noto Sans weights. No emoji/color/rare-script/serif/extraneous families.
+for d in adobe-source-code-pro cantarell; do
   cp -a "$FW_ROOTFS/usr/share/fonts/$d" "$RFS/usr/share/fonts/"
 done
 mkdir -p "$RFS/usr/share/fonts/noto"
-cp -a "$FW_ROOTFS"/usr/share/fonts/noto/NotoSans-*.ttf "$RFS/usr/share/fonts/noto/"
-cp -a "$FW_ROOTFS"/usr/share/fonts/noto/NotoSerif-*.ttf "$RFS/usr/share/fonts/noto/"
-cp -a "$FW_ROOTFS/usr/share/fonts/noto/NotoColorEmoji.ttf" "$RFS/usr/share/fonts/noto/"
+for f in NotoSans-Regular.ttf NotoSans-Bold.ttf NotoSans-Italic.ttf NotoSans-BoldItalic.ttf; do
+  cp -a "$FW_ROOTFS/usr/share/fonts/noto/$f" "$RFS/usr/share/fonts/noto/"
+done
 
 # 4) fontconfig: point at the bundled tree (no stale cache)
 cat > "$RFS/etc/fonts/fonts.conf" <<'EOF'
