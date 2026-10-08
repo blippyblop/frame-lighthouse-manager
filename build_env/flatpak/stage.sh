@@ -33,7 +33,17 @@ while read -r name; do
   elif [ -f "$s" ]; then
     cp -a "$s" "$RFS/usr/lib/"
   else
-    echo "UNRESOLVED: $name" >&2
+    # Fresh rootfs: name is a soname whose exact symlink/file is absent
+    # (the extracted rootfs only ships fully-versioned files). Glob the
+    # newest versioned file, e.g. libicudata.so.74 -> libicudata.so.74.2.
+    t=$(ls "$FW_ROOTFS/usr/lib/$name".* 2>/dev/null | sort -V | tail -1)
+    if [ -n "$t" ] && [ -f "$t" ]; then
+      b=$(basename "$t")
+      cp -a "$t" "$RFS/usr/lib/"
+      ln -s "$b" "$RFS/usr/lib/$name"
+    else
+      echo "UNRESOLVED: $name" >&2
+    fi
   fi
 done <<'LIBS'
 ld-linux-aarch64.so.1
@@ -174,14 +184,15 @@ for d in platforms xcbglintegrations wayland-graphics-integration-client \
   cp -a "$FW_ROOTFS/usr/lib/qt6/plugins/$d" "$RFS/usr/lib/qt6/plugins/"
 done
 
-# 3) Fonts: slim UI set — Cantarell + Source Code Pro (mono) + the four core
-#    Noto Sans weights. No emoji/color/rare-script/serif/extraneous families.
-for d in adobe-source-code-pro cantarell; do
-  cp -a "$FW_ROOTFS/usr/share/fonts/$d" "$RFS/usr/share/fonts/"
-done
+# 3) Fonts: slim, freely-licensed (SIL OFL) UI set — Cantarell (GNOME UI
+#    face) + the four core Noto Sans weights. Best-effort: the Holo
+#    preview's font dirs shift between builds; fontconfig falls back.
+cp -a "$FW_ROOTFS/usr/share/fonts/cantarell" "$RFS/usr/share/fonts/" 2>/dev/null \
+  || echo "font dir missing: cantarell" >&2
 mkdir -p "$RFS/usr/share/fonts/noto"
 for f in NotoSans-Regular.ttf NotoSans-Bold.ttf NotoSans-Italic.ttf NotoSans-BoldItalic.ttf; do
-  cp -a "$FW_ROOTFS/usr/share/fonts/noto/$f" "$RFS/usr/share/fonts/noto/"
+  cp -a "$FW_ROOTFS/usr/share/fonts/noto/$f" "$RFS/usr/share/fonts/noto/" 2>/dev/null \
+    || echo "font missing: $f" >&2
 done
 
 # 4) fontconfig: point at the bundled tree (no stale cache)

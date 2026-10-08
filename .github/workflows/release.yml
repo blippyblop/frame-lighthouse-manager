@@ -7,6 +7,11 @@ on:
       - "v*"
   workflow_dispatch:
 
+# release steps (softprops/action-gh-release) need to create the release and
+# upload assets; GITHUB_TOKEN defaults to read-only contents otherwise.
+permissions:
+  contents: write
+
 jobs:
   # Native aarch64 build on a GitHub-hosted ARM64 runner (no emulation).
   # Bootstraps Valve's Holo Core aarch64 preview rootfs -- the Frame's actual
