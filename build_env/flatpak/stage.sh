@@ -21,6 +21,7 @@ mkdir -p "$RFS/usr/lib" "$RFS/etc/fonts" "$RFS/usr/share/fonts" "$RFS/var/cache/
 
 # 1) Shared libraries: copy the real (versioned) file from the firmware rootfs
 #    and recreate the SONAME symlink the loader/dlopen expects.
+UNRESOLVED=0
 while read -r name; do
   s="$SYSROOT/usr/lib/$name"
   if [ -L "$s" ]; then
@@ -43,6 +44,7 @@ while read -r name; do
       ln -s "$b" "$RFS/usr/lib/$name"
     else
       echo "UNRESOLVED: $name" >&2
+      UNRESOLVED=$((UNRESOLVED+1))
     fi
   fi
 done <<'LIBS'
@@ -75,9 +77,9 @@ libQt6QmlWorkerScript.so.6
 libQt6Quick.so.6
 libQt6QuickControls2.so.6
 libQt6QuickTemplates2.so.6
-libQt6WaylandClient.so.6.8.0
-libQt6WaylandEglClientHwIntegration.so.6.8.0
-libQt6XcbQpa.so.6.8.0
+libQt6WaylandClient.so.6
+libQt6WaylandEglClientHwIntegration.so.6
+libQt6XcbQpa.so.6
 libSM.so.6
 libX11-xcb.so.1
 libX11.so.6
@@ -87,7 +89,7 @@ libb2.so.1
 libblkid.so.1
 libbrotlicommon.so.1
 libbrotlidec.so.1
-libbz2.so.1.0
+libbz2.so.1
 libc.so.6
 libcap.so.2
 libcom_err.so.2
@@ -134,10 +136,10 @@ libstdc++.so.6
 libsystemd.so.0
 libudev.so.1
 libunistring.so.5
-libwayland-client.so.0.26.0
-libwayland-cursor.so.0.26.0
-libwayland-egl.so.1.26.0
-libwayland-server.so.0.26.0
+libwayland-client.so.0
+libwayland-cursor.so.0
+libwayland-egl.so.1
+libwayland-server.so.0
 libxcb-cursor.so.0
 libxcb-icccm.so.4
 libxcb-image.so.0
@@ -157,6 +159,7 @@ libxkbcommon.so.0
 libz.so.1
 libzstd.so.1
 LIBS
+[ "$UNRESOLVED" -eq 0 ] || { echo "FATAL: $UNRESOLVED lib(s) unresolved — refusing to stage a broken bundle" >&2; exit 1; }
 chmod +x "$RFS"/usr/lib/ld-linux-aarch64.so.1
 
 # 2) QML modules + plugins: whitelist ONLY what the app + Kirigami import.
