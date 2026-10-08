@@ -54,7 +54,9 @@ install_soname() {
     real=$(resolve_lib "$1") || return 1
     b=$(basename "$real")
     cp -a "$real" "$RFS/usr/lib/$b"
-    ln -sf "$b" "$RFS/usr/lib/$1"
+    # if the rootfs ships the file under its exact soname, the copy IS the
+    # link target — creating libm.so.6 -> libm.so.6 would be a loop
+    if [ "$b" != "$1" ]; then ln -sf "$b" "$RFS/usr/lib/$1"; fi
     return 0
 }
 
@@ -174,7 +176,7 @@ process_elf() {
     if real=$(resolve_lib "$n"); then
       b=$(basename "$real")
       cp -a "$real" "$RFS/usr/lib/$b"
-      ln -sf "$b" "$RFS/usr/lib/$n"
+      if [ "$b" != "$n" ]; then ln -sf "$b" "$RFS/usr/lib/$n"; fi
       process_elf "$RFS/usr/lib/$b"
     else
       echo "MISSING DEP: $n (needed by $(basename "$1"))" >&2
